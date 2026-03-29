@@ -7,7 +7,15 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": ["**", "!examples", "!dist", "!**/*.css"]
+		"includes": [
+			"**",
+			"!examples",
+			"!dist",
+			"!dist-*",
+			"!coverage",
+			"!out",
+			"!**/*.css"
+		]
 	},
 	"formatter": {
 		"enabled": true,
