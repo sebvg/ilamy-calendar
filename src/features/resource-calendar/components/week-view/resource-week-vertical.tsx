@@ -17,7 +17,6 @@ export const ResourceWeekVertical: React.FC = () => {
 		currentDate,
 		getVisibleResources,
 		firstDayOfWeek,
-		currentLocale,
 		timeFormat,
 		t,
 		businessHours,
@@ -65,14 +64,11 @@ export const ResourceWeekVertical: React.FC = () => {
 			noEvents: true,
 			renderCell: (date: Dayjs) => (
 				<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-					{Intl.DateTimeFormat(currentLocale, {
-						hour: 'numeric',
-						hour12: timeFormat === '12-hour',
-					}).format(date.toDate())}
+					{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
 				</div>
 			),
 		}),
-		[hours, currentLocale, timeFormat]
+		[hours, timeFormat]
 	)
 
 	const columns = useMemo(

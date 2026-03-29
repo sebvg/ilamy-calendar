@@ -29,7 +29,7 @@ export const DayNumber: React.FC<DayNumberProps> = ({
 				isToday ? 'day-number-today' : `day-number-${date.format('D')}`
 			}
 		>
-			{Intl.DateTimeFormat(locale, { day: 'numeric' }).format(date.toDate())}
+			{date.format('D')}
 		</div>
 	)
 }

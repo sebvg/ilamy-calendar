@@ -55,8 +55,9 @@ export function getMonthWeeks(
 
 export function getMonthDays(monthDate: Dayjs): Dayjs[] {
 	const daysInMonth = monthDate.daysInMonth()
+	const startOfMonth = monthDate.startOf('month')
 	return Array.from({ length: daysInMonth }, (_, i) =>
-		monthDate.startOf('month').add(i, 'day')
+		startOfMonth.add(i, 'day')
 	)
 }
 

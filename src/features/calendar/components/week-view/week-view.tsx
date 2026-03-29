@@ -20,7 +20,6 @@ export const WeekView: React.FC = () => {
 		firstDayOfWeek,
 		selectDate,
 		openEventForm,
-		currentLocale,
 		timeFormat,
 		businessHours,
 		hideNonBusinessHours,
@@ -60,10 +59,7 @@ export const WeekView: React.FC = () => {
 		noEvents: true,
 		renderCell: (date: Dayjs) => (
 			<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-				{Intl.DateTimeFormat(currentLocale, {
-					hour: 'numeric',
-					hour12: timeFormat === '12-hour',
-				}).format(date.toDate())}
+				{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
 			</div>
 		),
 	}
@@ -139,9 +135,7 @@ export const WeekView: React.FC = () => {
 									isToday && 'bg-primary text-primary-foreground'
 								)}
 							>
-								{Intl.DateTimeFormat(currentLocale, {
-									day: 'numeric',
-								}).format(day.toDate())}
+								{day.format('D')}
 							</div>
 						</AnimatedSection>
 					)
