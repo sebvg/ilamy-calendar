@@ -45,7 +45,6 @@
 		"README.md",
 		"LICENSE"
 	],
-	"sideEffects": false,
 	"scripts": {
 		"dev": "bun --hot src/index.tsx",
 		"start": "NODE_ENV=production bun src/index.tsx",
@@ -63,6 +62,8 @@
 		"ci": "bun run check && bun run type-check && bun run test && bun run build",
 		"pre-commit": "bun run check:fix",
 		"prepare": "bunx husky",
+		"prepack": "bun scripts/prepack.ts",
+		"postpack": "bun scripts/postpack.ts",
 		"release": "bun run ci && npm publish --access public",
 		"version:patch": "npm version patch",
 		"version:minor": "npm version minor",
