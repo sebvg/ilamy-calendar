@@ -207,12 +207,13 @@ describe('CurrentTimeIndicator', () => {
 
 		renderIndicator({ rangeStart, rangeEnd, now, resource, view })
 
-		expect(receivedProps).not.toBeNull()
-		expect(receivedProps?.currentTime.isSame(now)).toBe(true)
-		expect(receivedProps?.rangeStart.isSame(rangeStart)).toBe(true)
-		expect(receivedProps?.rangeEnd.isSame(rangeEnd)).toBe(true)
-		expect(receivedProps?.progress).toBe(50)
-		expect(receivedProps?.resource).toEqual(resource)
-		expect(receivedProps?.view).toBe(view)
+		const props = receivedProps as RenderCurrentTimeIndicatorProps | null
+		expect(props).not.toBeNull()
+		expect(props?.currentTime.isSame(now)).toBe(true)
+		expect(props?.rangeStart.isSame(rangeStart)).toBe(true)
+		expect(props?.rangeEnd.isSame(rangeEnd)).toBe(true)
+		expect(props?.progress).toBe(50)
+		expect(props?.resource).toEqual(resource)
+		expect(props?.view).toBe(view)
 	})
 })

@@ -57,7 +57,7 @@ describe('ResourceCell', () => {
 	})
 
 	test('renders with children if provided', () => {
-		renderResourceCell(null, <div data-testid="with-children"></div>)
+		renderResourceCell(undefined, <div data-testid="with-children"></div>)
 		expect(screen.getByTestId('with-children')).toBeInTheDocument()
 	})
 

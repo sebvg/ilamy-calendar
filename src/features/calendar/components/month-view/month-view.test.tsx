@@ -96,6 +96,7 @@ describe('MonthView', () => {
 
 		const monthHeader = container.querySelector('[data-testid="month-header"]')
 		// first day of week should be Monday
+		if (!monthHeader) throw new Error('monthHeader not found')
 		expect(monthHeader.firstChild).toHaveAttribute(
 			'data-testid',
 			'weekday-header-mon'

@@ -8,7 +8,7 @@ import { VerticalGridEventsLayer } from './vertical-grid-events-layer'
 
 export interface VerticalGridColProps {
 	id: string
-	day: Dayjs
+	day?: Dayjs
 	resourceId?: string | number
 	resource?: Resource
 	days: Dayjs[] // The specific day this column represents

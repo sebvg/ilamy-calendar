@@ -17,12 +17,16 @@ export const getUpdatedEvent = (
 	let newStart: Dayjs
 
 	if (isTimeCell) {
-		const { date, hour = 0, minute = 0 } = over.data.current
+		const {
+			date,
+			hour = 0,
+			minute = 0,
+		} = over.data.current as Record<string, any>
 
 		// Create new start time based on the drop target
 		newStart = dayjs(date).hour(hour).minute(minute)
 	} else {
-		const { date } = over.data.current
+		const { date } = over.data.current as Record<string, any>
 
 		newStart = dayjs(date)
 	}

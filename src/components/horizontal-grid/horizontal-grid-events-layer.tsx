@@ -23,7 +23,7 @@ const NoMemoHorizontalGridEventsLayer: React.FC<
 	'data-testid': dataTestId,
 	allDay,
 }) => {
-	const weekStart = days.at(0).startOf('day')
+	const weekStart = days.at(0)?.startOf('day')
 
 	const processedWeekEvents = useProcessedWeekEvents({
 		days,
@@ -39,7 +39,7 @@ const NoMemoHorizontalGridEventsLayer: React.FC<
 			data-testid={dataTestId}
 		>
 			{processedWeekEvents.map((event) => {
-				const eventKey = `${event.id}-${event.position}-${weekStart.toISOString()}-${resourceId ?? 'no-resource'}`
+				const eventKey = `${event.id}-${event.position}-${weekStart?.toISOString()}-${resourceId ?? 'no-resource'}`
 
 				return (
 					<div

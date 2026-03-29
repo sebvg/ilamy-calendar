@@ -143,7 +143,7 @@ export const generateRecurringEvents = ({
 				const hasExdates = event.exdates && event.exdates.length > 0
 				if (hasExdates) {
 					const eventStartISO = recurringEvent.start.toISOString()
-					const isExcluded = event.exdates.includes(eventStartISO)
+					const isExcluded = event.exdates?.includes(eventStartISO)
 					if (isExcluded) {
 						return false
 					}
@@ -237,7 +237,7 @@ export const updateRecurringEvent = ({
 				rrule: {
 					...baseEvent.rrule,
 					until: terminationDate,
-				},
+				} as RRuleOptions,
 			}
 			updatedEvents[baseEventIndex] = terminatedEvent
 
@@ -256,7 +256,7 @@ export const updateRecurringEvent = ({
 					...baseEvent.rrule,
 					...updates.rrule,
 					dtstart: newSeriesStartTime.toDate(),
-				},
+				} as RRuleOptions,
 				id: newSeriesId,
 				uid: newSeriesUID, // New UID for new series
 				start: newSeriesStartTime,
@@ -336,7 +336,7 @@ export const deleteRecurringEvent = ({
 				rrule: {
 					...baseEvent.rrule,
 					until: terminationDate,
-				},
+				} as RRuleOptions,
 			}
 			updatedEvents[baseEventIndex] = terminatedEvent
 			break

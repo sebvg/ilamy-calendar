@@ -71,7 +71,7 @@ export interface CalendarEngineReturn {
 	setSelectedDate: React.Dispatch<React.SetStateAction<Dayjs | null>>
 	getEventsForDateRange: (startDate: Dayjs, endDate: Dayjs) => CalendarEvent[]
 	findParentRecurringEvent: (event: CalendarEvent) => CalendarEvent | null
-	t: (key: keyof Translations) => string
+	t: TranslatorFunction
 }
 
 const VIEW_UNITS: Record<CalendarView, ManipulateType> = {
@@ -112,14 +112,15 @@ export const useCalendarEngine = (
 	const [currentLocale, setCurrentLocale] = useState(locale || 'en')
 	const lastEventsProp = useRef(events)
 
-	const t = useMemo(() => {
+	const t: TranslatorFunction = useMemo(() => {
 		if (translator) {
 			return translator
 		}
 		if (translations) {
-			return (key: keyof Translations) => translations[key] || key
+			return (key: string) => translations[key as keyof Translations] || key
 		}
-		return (key: keyof Translations) => defaultTranslations[key] || key
+		return (key: string) =>
+			defaultTranslations[key as keyof Translations] || key
 	}, [translations, translator])
 
 	const getEventsForDateRange = useCallback(
