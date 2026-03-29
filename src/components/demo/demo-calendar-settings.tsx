@@ -9,6 +9,15 @@ import {
 } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
+	Combobox,
+	ComboboxCollection,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from '@/components/ui/combobox'
+import {
 	Select,
 	SelectContent,
 	SelectItem,
@@ -18,6 +27,8 @@ import {
 import dayjs, { type Dayjs } from '@/lib/configs/dayjs-config'
 import type { CalendarView, TimeFormat } from '@/types'
 import { ModeToggle } from './mode-toggle'
+
+const ALL_TIMEZONES = Intl.supportedValuesOf('timeZone')
 
 interface DemoCalendarSettingsProps {
 	// Calendar type
@@ -309,18 +320,27 @@ export function DemoCalendarSettings({
 					<label className="block text-sm text-left font-medium mb-1">
 						Timezone
 					</label>
-					<Select onValueChange={setTimezone} value={timezone}>
-						<SelectTrigger className="w-full">
-							<SelectValue placeholder="Select timezone" />
-						</SelectTrigger>
-						<SelectContent>
-							{Intl.supportedValuesOf('timeZone').map((tz) => (
-								<SelectItem key={tz} value={tz}>
-									{tz}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+					<Combobox
+						items={ALL_TIMEZONES}
+						onValueChange={(val) => {
+							if (val) setTimezone(val)
+						}}
+						value={timezone}
+					>
+						<ComboboxInput placeholder="Search timezones..." />
+						<ComboboxContent>
+							<ComboboxEmpty>No timezones found.</ComboboxEmpty>
+							<ComboboxList>
+								<ComboboxCollection>
+									{(tz) => (
+										<ComboboxItem key={tz} value={tz}>
+											{tz}
+										</ComboboxItem>
+									)}
+								</ComboboxCollection>
+							</ComboboxList>
+						</ComboboxContent>
+					</Combobox>
 				</div>
 				<div>
 					<label className="block text-sm text-left font-medium mb-1">
