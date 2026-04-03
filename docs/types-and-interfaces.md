@@ -77,7 +77,8 @@ Public-facing event type that accepts flexible date inputs. Extends `CalendarEve
 | `color` | `string` | no | Resource color |
 | `backgroundColor` | `string` | no | Resource background color |
 | `position` | `number` | no | Display order |
-| `businessHours` | `BusinessHours \| BusinessHours[]` | no | Resource-specific business hours (overrides global) |
+| `businessHours` | `BusinessHours | BusinessHours[]` | no | Resource-specific business hours (overrides global) |
+| `data` | `Record<string, any>` | no | Custom resource metadata |
 
 ## IlamyCalendarProps
 
