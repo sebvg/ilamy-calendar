@@ -38,6 +38,11 @@ export interface IlamyCalendarPropEvent
  * Information passed to the onCellClick callback.
  * Uses named properties for extensibility.
  */
+export interface DateRange {
+	start: Dayjs
+	end: Dayjs
+}
+
 export interface CellClickInfo {
 	/** Start date/time of the clicked cell */
 	start: Dayjs
@@ -130,7 +135,7 @@ export interface IlamyCalendarProps {
 	 * Callback when the current date changes (navigation).
 	 * Provides the new current date and the current visible range.
 	 */
-	onDateChange?: (date: Dayjs, range: { start: Dayjs; end: Dayjs }) => void
+	onDateChange?: (date: Dayjs, range: DateRange) => void
 	/**
 	 * Locale to use for formatting dates and times.
 	 * If not provided, the default locale will be used.

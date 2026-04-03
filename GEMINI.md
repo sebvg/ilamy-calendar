@@ -9,7 +9,7 @@ It features standard calendar views (Month, Week, Day, Year) and a Resource Cale
 - **Package Manager**: **ALWAYS use Bun**. (`bun test`, `bun run`, `bun install`).
 - **TDD**: Always write tests FIRST.
 - **Date Format**: Always use full **ISO 8601** format for date-time strings in tests and storage (`YYYY-MM-DDTHH:mm:ss.sssZ`). Use `dayjs` for manipulation.
-- **Commits**: **NEVER commit changes without asking first.**
+- **Commits**: **NEVER commit changes without asking first.** ALWAYS run `bun run ci` and ensure it passes before committing.
 - **Branches**: **NEVER merge or push directly to `main`.** Always create a feature/fix branch and open a Pull Request.
 
 ## Key Implementations & Patterns

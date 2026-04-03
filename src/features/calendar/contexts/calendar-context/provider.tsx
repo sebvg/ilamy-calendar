@@ -6,6 +6,7 @@ import type { BusinessHours, CalendarEvent } from '@/components/types'
 import type {
 	CalendarClassesOverride,
 	CellClickInfo,
+	DateRange,
 	RenderCurrentTimeIndicatorProps,
 } from '@/features/calendar/types'
 import { useCalendarEngine } from '@/hooks/use-calendar-engine'
@@ -28,7 +29,7 @@ export interface CalendarProviderProps {
 	onEventAdd?: (event: CalendarEvent) => void
 	onEventUpdate?: (event: CalendarEvent) => void
 	onEventDelete?: (event: CalendarEvent) => void
-	onDateChange?: (date: Dayjs) => void
+	onDateChange?: (date: Dayjs, range: DateRange) => void
 	locale?: string
 	timezone?: string
 	disableCellClick?: boolean
