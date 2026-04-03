@@ -60,4 +60,12 @@ export interface Resource {
 	 * If provided, these will be used instead of the global business hours for this resource.
 	 */
 	businessHours?: BusinessHours | BusinessHours[]
+	/**
+	 * Custom data associated with the resource
+	 * Use this to store additional metadata specific to your application
+	 * @example { avatar: 'https://example.com/avatar.png', role: 'admin' }
+	 */
+	// oxlint-disable-next-line no-explicit-any
+	// biome-ignore lint/suspicious/noExplicitAny: Metadata can be anything
+	data?: Record<string, any>
 }

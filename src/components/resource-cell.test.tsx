@@ -68,4 +68,37 @@ describe('ResourceCell', () => {
 		)
 		expect(screen.getByTestId('with-render-resource')).toBeInTheDocument()
 	})
+
+	test('custom metadata in Resource.data is accessible in renderResource', () => {
+		const resourceWithData: Resource = {
+			id: 'meta-1',
+			title: 'Resource with Data',
+			data: { avatar: 'https://example.com/avatar.png' },
+		}
+
+		const renderWithMeta = (resource: Resource) => (
+			<div data-testid="meta-renderer">
+				<img
+					alt="avatar"
+					data-testid="resource-avatar"
+					src={resource.data?.avatar}
+				/>
+				<span>{resource.title}</span>
+			</div>
+		)
+
+		render(
+			<ResourceCalendarProvider
+				dayMaxEvents={7}
+				initialDate={initialDate}
+				renderResource={renderWithMeta}
+				resources={[resourceWithData]}
+			>
+				<ResourceCell data-testid="meta-cell" resource={resourceWithData} />
+			</ResourceCalendarProvider>
+		)
+
+		const img = screen.getByTestId('resource-avatar')
+		expect(img).toHaveAttribute('src', 'https://example.com/avatar.png')
+	})
 })
