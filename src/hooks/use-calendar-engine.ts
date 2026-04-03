@@ -26,7 +26,7 @@ export interface CalendarEngineConfig {
 	onEventAdd?: (event: CalendarEvent) => void
 	onEventUpdate?: (event: CalendarEvent) => void
 	onEventDelete?: (event: CalendarEvent) => void
-	onDateChange?: (date: Dayjs) => void
+	onDateChange?: (date: Dayjs, range: { start: Dayjs; end: Dayjs }) => void
 	onViewChange?: (view: CalendarView) => void
 	locale?: string
 	timezone?: string
@@ -79,6 +79,35 @@ const VIEW_UNITS: Record<CalendarView, ManipulateType> = {
 	week: 'week',
 	month: 'month',
 	year: 'year',
+}
+
+export const calculateViewRange = (
+	date: Dayjs,
+	view: CalendarView,
+	firstDayOfWeek: number
+): { start: Dayjs; end: Dayjs } => {
+	if (view === 'day') {
+		return {
+			start: date.startOf('day'),
+			end: date.endOf('day'),
+		}
+	}
+	if (view === 'year') {
+		return {
+			start: date.startOf('year'),
+			end: date.endOf('year'),
+		}
+	}
+	if (view === 'week') {
+		const weekDays = getWeekDays(date, firstDayOfWeek)
+		return {
+			start: weekDays[0].startOf('day'),
+			end: weekDays[6].endOf('day'),
+		}
+	}
+	// month view
+	const weeks = getMonthWeeks(date, firstDayOfWeek)
+	return { start: weeks[0][0].startOf('day'), end: weeks[5][6].endOf('day') }
 }
 
 export const useCalendarEngine = (
@@ -157,28 +186,7 @@ export const useCalendarEngine = (
 	)
 
 	const getCurrentViewRange = useCallback(() => {
-		if (view === 'day') {
-			return {
-				start: currentDate.startOf('day'),
-				end: currentDate.endOf('day'),
-			}
-		}
-		if (view === 'year') {
-			return {
-				start: currentDate.startOf('year'),
-				end: currentDate.endOf('year'),
-			}
-		}
-		if (view === 'week') {
-			const weekDays = getWeekDays(currentDate, firstDayOfWeek)
-			return {
-				start: weekDays[0].startOf('day'),
-				end: weekDays[6].endOf('day'),
-			}
-		}
-		// month view
-		const weeks = getMonthWeeks(currentDate, firstDayOfWeek)
-		return { start: weeks[0][0].startOf('day'), end: weeks[5][6].endOf('day') }
+		return calculateViewRange(currentDate, view, firstDayOfWeek)
 	}, [currentDate, view, firstDayOfWeek])
 
 	const processedEvents = useMemo(() => {
@@ -219,9 +227,10 @@ export const useCalendarEngine = (
 	const selectDate = useCallback(
 		(date: Dayjs) => {
 			setCurrentDate(date)
-			onDateChange?.(date)
+			const range = calculateViewRange(date, view, firstDayOfWeek)
+			onDateChange?.(date, range)
 		},
-		[onDateChange]
+		[onDateChange, view, firstDayOfWeek]
 	)
 
 	const navigatePeriod = useCallback(
@@ -231,11 +240,12 @@ export const useCalendarEngine = (
 					direction === 1
 						? prev.add(1, VIEW_UNITS[view])
 						: prev.subtract(1, VIEW_UNITS[view])
-				onDateChange?.(newDate)
+				const range = calculateViewRange(newDate, view, firstDayOfWeek)
+				onDateChange?.(newDate, range)
 				return newDate
 			})
 		},
-		[view, onDateChange]
+		[view, onDateChange, firstDayOfWeek]
 	)
 
 	const nextPeriod = useCallback(() => navigatePeriod(1), [navigatePeriod])
@@ -244,8 +254,9 @@ export const useCalendarEngine = (
 	const today = useCallback(() => {
 		const newDate = dayjs()
 		setCurrentDate(newDate)
-		onDateChange?.(newDate)
-	}, [onDateChange])
+		const range = calculateViewRange(newDate, view, firstDayOfWeek)
+		onDateChange?.(newDate, range)
+	}, [onDateChange, view, firstDayOfWeek])
 
 	const addEvent = useCallback(
 		(event: CalendarEvent) => {

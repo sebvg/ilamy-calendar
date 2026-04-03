@@ -128,9 +128,9 @@ export interface IlamyCalendarProps {
 	onEventDelete?: (event: CalendarEvent) => void
 	/**
 	 * Callback when the current date changes (navigation).
-	 * Provides the new current date.
+	 * Provides the new current date and the current visible range.
 	 */
-	onDateChange?: (date: Dayjs) => void
+	onDateChange?: (date: Dayjs, range: { start: Dayjs; end: Dayjs }) => void
 	/**
 	 * Locale to use for formatting dates and times.
 	 * If not provided, the default locale will be used.
