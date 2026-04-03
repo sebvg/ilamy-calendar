@@ -99,7 +99,7 @@ Top-level props for `<IlamyCalendar>`. Key props summarized below — see source
 | `onEventAdd` | `(event) => void` | — | Event add callback |
 | `onEventUpdate` | `(event) => void` | — | Event update callback |
 | `onEventDelete` | `(event) => void` | — | Event delete callback |
-| `onDateChange` | `(date) => void` | — | Date navigation callback |
+| `onDateChange` | `(date: Dayjs, range: { start: Dayjs; end: Dayjs }) => void` | — | Date navigation callback |
 | `locale` | `string` | — | dayjs locale |
 | `timezone` | `string` | — | dayjs timezone |
 | `translations` | `Translations` | — | Translation object |
