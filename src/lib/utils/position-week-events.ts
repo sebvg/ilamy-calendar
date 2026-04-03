@@ -1,5 +1,5 @@
 import type { CalendarEvent } from '@/components/types'
-import dayjs from '@/lib/configs/dayjs-config'
+import dayjs, { type Dayjs } from '@/lib/configs/dayjs-config'
 import {
 	DAY_NUMBER_HEIGHT,
 	EVENT_BAR_HEIGHT,
@@ -17,7 +17,7 @@ interface PositionedEvent extends CalendarEvent {
 }
 
 interface GetPositionedEventsProps {
-	days: dayjs.Dayjs[]
+	days: Dayjs[]
 	events: CalendarEvent[]
 	dayMaxEvents: number
 	dayNumberHeight?: number
@@ -35,10 +35,13 @@ export const getPositionedEvents = ({
 }: GetPositionedEventsProps) => {
 	// For hour-based grids, use actual first/last hours from days array
 	// For day-based grids, use start/end of day to capture all events
+	const first = days.at(0)
+	const last = days.at(-1)
+	if (!first || !last) return []
+
 	const firstDay =
-		gridType === 'hour' ? days.at(0).startOf('hour') : days.at(0).startOf('day')
-	const lastDay =
-		gridType === 'hour' ? days.at(-1).endOf('hour') : days.at(-1).endOf('day')
+		gridType === 'hour' ? first.startOf('hour') : first.startOf('day')
+	const lastDay = gridType === 'hour' ? last.endOf('hour') : last.endOf('day')
 	const dayCount = days.length
 
 	// Separate multi-day and single-day events

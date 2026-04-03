@@ -11,7 +11,6 @@ export const ResourceDayHorizontal: React.FC = () => {
 	const {
 		currentDate,
 		t,
-		currentLocale,
 		timeFormat,
 		businessHours,
 		hideNonBusinessHours,
@@ -63,10 +62,7 @@ export const ResourceDayHorizontal: React.FC = () => {
 								key={`${key}-animated`}
 								transitionKey={`${key}-motion`}
 							>
-								{Intl.DateTimeFormat(currentLocale, {
-									hour: 'numeric',
-									hour12: timeFormat === '12-hour',
-								}).format(col.toDate())}
+								{col.format(timeFormat === '12-hour' ? 'h A' : 'H')}
 							</AnimatedSection>
 						)
 					})}

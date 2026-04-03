@@ -56,7 +56,7 @@ export const ResourceCalendarProvider: React.FC<
 	disableEventClick,
 	disableDragAndDrop,
 	dayMaxEvents,
-	eventSpacing,
+	eventSpacing = 1,
 	stickyViewHeader = true,
 	viewHeaderClassName = '',
 	headerComponent,

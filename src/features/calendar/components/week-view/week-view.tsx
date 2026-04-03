@@ -5,7 +5,7 @@ import { AnimatedSection } from '@/components/animations/animated-section'
 import { VerticalGrid } from '@/components/vertical-grid/vertical-grid'
 import { getViewHours } from '@/features/calendar/utils/view-hours'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
-import dayjs from '@/lib/configs/dayjs-config'
+import dayjs, { type Dayjs } from '@/lib/configs/dayjs-config'
 import { cn } from '@/lib/utils'
 import { getWeekDays } from '@/lib/utils/date-utils'
 
@@ -20,7 +20,6 @@ export const WeekView: React.FC = () => {
 		firstDayOfWeek,
 		selectDate,
 		openEventForm,
-		currentLocale,
 		timeFormat,
 		businessHours,
 		hideNonBusinessHours,
@@ -58,12 +57,9 @@ export const WeekView: React.FC = () => {
 		className: `shrink-0 ${LEFT_COL_WIDTH} sticky left-0 bg-background z-20`,
 		gridType: 'hour' as const,
 		noEvents: true,
-		renderCell: (date: dayjs.Dayjs) => (
+		renderCell: (date: Dayjs) => (
 			<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-				{Intl.DateTimeFormat(currentLocale, {
-					hour: 'numeric',
-					hour12: timeFormat === '12-hour',
-				}).format(date.toDate())}
+				{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
 			</div>
 		),
 	}
@@ -139,9 +135,7 @@ export const WeekView: React.FC = () => {
 									isToday && 'bg-primary text-primary-foreground'
 								)}
 							>
-								{Intl.DateTimeFormat(currentLocale, {
-									day: 'numeric',
-								}).format(day.toDate())}
+								{day.format('D')}
 							</div>
 						</AnimatedSection>
 					)

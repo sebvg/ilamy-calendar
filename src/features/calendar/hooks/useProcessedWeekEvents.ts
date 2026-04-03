@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
-import type dayjs from '@/lib/configs/dayjs-config'
+import type { Dayjs } from '@/lib/configs/dayjs-config'
 import { getPositionedEvents } from '@/lib/utils/position-week-events'
 
 interface UseProcessedWeekEventsProps {
-	days: dayjs.Dayjs[]
+	days: Dayjs[]
 	allDay?: boolean
 	dayNumberHeight?: number
 	resourceId?: string | number
@@ -25,10 +25,13 @@ export const useProcessedWeekEvents = ({
 		getEventsForResource,
 	} = useSmartCalendarContext()
 
-	const weekStart = days.at(0).startOf('day')
-	const weekEnd = days.at(-1).endOf('day')
+	const first = days.at(0)
+	const last = days.at(-1)
+	const weekStart = first?.startOf('day')
+	const weekEnd = last?.endOf('day')
 
 	const events = useMemo(() => {
+		if (!weekStart || !weekEnd) return []
 		let weekEvents = getEventsForDateRange(weekStart, weekEnd)
 		if (resourceId) {
 			const resourceEvents = getEventsForResource(resourceId)

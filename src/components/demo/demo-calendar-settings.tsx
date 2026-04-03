@@ -9,15 +9,26 @@ import {
 } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
+	Combobox,
+	ComboboxCollection,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from '@/components/ui/combobox'
+import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import dayjs from '@/lib/configs/dayjs-config'
+import dayjs, { type Dayjs } from '@/lib/configs/dayjs-config'
 import type { CalendarView, TimeFormat } from '@/types'
 import { ModeToggle } from './mode-toggle'
+
+const ALL_TIMEZONES = Intl.supportedValuesOf('timeZone')
 
 interface DemoCalendarSettingsProps {
 	// Calendar type
@@ -27,8 +38,8 @@ interface DemoCalendarSettingsProps {
 	setFirstDayOfWeek: (value: WeekDays) => void
 	initialView: CalendarView
 	setInitialView: (value: CalendarView) => void
-	initialDate: dayjs.Dayjs | undefined
-	setInitialDate: (value: dayjs.Dayjs | undefined) => void
+	initialDate: Dayjs | undefined
+	setInitialDate: (value: Dayjs | undefined) => void
 	useCustomEventRenderer: boolean
 	setUseCustomEventRenderer: (value: boolean) => void
 	locale: string
@@ -86,6 +97,8 @@ export function DemoCalendarSettings({
 	setUseCustomEventRenderer,
 	locale,
 	setLocale,
+	timezone,
+	setTimezone,
 	disableCellClick,
 	setDisableCellClick,
 	disableEventClick,
@@ -303,21 +316,32 @@ export function DemoCalendarSettings({
 						</SelectContent>
 					</Select>
 				</div>
-				{/* <div>
-          <label className="block text-sm text-left font-medium mb-1">Timezone</label>
-          <Select value={timezone} onValueChange={setTimezone}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select timezone" />
-            </SelectTrigger>
-            <SelectContent>
-              {Intl.supportedValuesOf('timeZone').map((tz) => (
-                <SelectItem key={tz} value={tz}>
-                  {tz}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div> */}
+				<div>
+					<label className="block text-sm text-left font-medium mb-1">
+						Timezone
+					</label>
+					<Combobox
+						items={ALL_TIMEZONES}
+						onValueChange={(val) => {
+							if (val) setTimezone(val)
+						}}
+						value={timezone}
+					>
+						<ComboboxInput placeholder="Search timezones..." />
+						<ComboboxContent>
+							<ComboboxEmpty>No timezones found.</ComboboxEmpty>
+							<ComboboxList>
+								<ComboboxCollection>
+									{(tz) => (
+										<ComboboxItem key={tz} value={tz}>
+											{tz}
+										</ComboboxItem>
+									)}
+								</ComboboxCollection>
+							</ComboboxList>
+						</ComboboxContent>
+					</Combobox>
+				</div>
 				<div>
 					<label className="block text-sm text-left font-medium mb-1">
 						Calendar Height

@@ -2,7 +2,7 @@ import type React from 'react'
 import { memo, useCallback } from 'react'
 import type { Resource } from '@/features/resource-calendar/types'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
-import type dayjs from '@/lib/configs/dayjs-config'
+import type { Dayjs } from '@/lib/configs/dayjs-config'
 import { cn } from '@/lib/utils'
 import { GridCell } from '../grid-cell'
 import { ResourceCell } from '../resource-cell'
@@ -10,8 +10,8 @@ import { HorizontalGridEventsLayer } from './horizontal-grid-events-layer'
 
 interface HorizontalGridColumn {
 	id: string
-	day?: dayjs.Dayjs
-	days?: dayjs.Dayjs[]
+	day?: Dayjs
+	days?: Dayjs[]
 	gridType: 'day' | 'hour'
 	className?: string
 	renderCell?: (row: HorizontalGridRowProps) => React.ReactNode
@@ -48,7 +48,7 @@ const NoMemoHorizontalGridRow: React.FC<HorizontalGridRowProps> = ({
 	const isGrouped = columns.some((col) => col.days)
 
 	const renderEventsLayer = useCallback(
-		(days: dayjs.Dayjs[]) => {
+		(days: Dayjs[]) => {
 			return (
 				<div className="absolute inset-0 z-10 pointer-events-none">
 					<HorizontalGridEventsLayer
@@ -70,16 +70,16 @@ const NoMemoHorizontalGridRow: React.FC<HorizontalGridRowProps> = ({
 			className={cn('flex flex-1 relative', className)}
 			data-testid={`horizontal-row-${id}`}
 		>
-			{isResourceCalendar && (
+			{isResourceCalendar && resource && (
 				<ResourceCell
 					className="w-20 sm:w-40 sticky left-0 bg-background z-20 h-full"
-					data-testid={`horizontal-row-label-${resource?.id}`}
+					data-testid={`horizontal-row-label-${resource.id}`}
 					resource={resource}
 				>
 					{renderResource ? (
 						renderResource(resource)
 					) : (
-						<div className="wrap-break-word text-sm">{resource?.title}</div>
+						<div className="wrap-break-word text-sm">{resource.title}</div>
 					)}
 				</ResourceCell>
 			)}
@@ -129,7 +129,7 @@ const NoMemoHorizontalGridRow: React.FC<HorizontalGridRowProps> = ({
 									))}
 								</div>
 
-								{renderEventsLayer(col.days)}
+								{col.days && renderEventsLayer(col.days)}
 							</div>
 						)
 					})}
@@ -137,7 +137,9 @@ const NoMemoHorizontalGridRow: React.FC<HorizontalGridRowProps> = ({
 
 				{/* Events layer positioned absolutely over the row */}
 				{!isGrouped &&
-					renderEventsLayer(columns.map((col) => col.day).filter(Boolean))}
+					renderEventsLayer(
+						columns.map((col) => col.day).filter((d): d is Dayjs => Boolean(d))
+					)}
 			</div>
 		</div>
 	)

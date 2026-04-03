@@ -156,13 +156,15 @@ export const EventForm: React.FC<EventFormProps> = ({
 
 	// Create wrapper functions to fix TypeScript errors with DatePicker
 	const handleStartDateChange = (date: Date | undefined) => {
+		if (!date) return
 		setStartDate(date)
-		if (date && dayjs(date).isAfter(dayjs(endDate))) {
+		if (dayjs(date).isAfter(dayjs(endDate))) {
 			setEndDate(date)
 		}
 	}
 
 	const handleEndDateChange = (date: Date | undefined) => {
+		if (!date) return
 		setEndDate(date)
 		if (date && dayjs(date).isBefore(dayjs(startDate))) {
 			setStartDate(date)

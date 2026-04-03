@@ -8,7 +8,7 @@ import type { BusinessHours } from '@/components/types'
 import { VerticalGrid } from '@/components/vertical-grid/vertical-grid'
 import { getViewHours } from '@/features/calendar/utils/view-hours'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
-import type dayjs from '@/lib/configs/dayjs-config'
+import type { Dayjs } from '@/lib/configs/dayjs-config'
 import { cn } from '@/lib/utils'
 import { getWeekDays } from '@/lib/utils/date-utils'
 
@@ -17,7 +17,6 @@ export const ResourceWeekVertical: React.FC = () => {
 		currentDate,
 		getVisibleResources,
 		firstDayOfWeek,
-		currentLocale,
 		timeFormat,
 		t,
 		businessHours,
@@ -63,16 +62,13 @@ export const ResourceWeekVertical: React.FC = () => {
 				'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
 			gridType: 'hour' as const,
 			noEvents: true,
-			renderCell: (date: dayjs.Dayjs) => (
+			renderCell: (date: Dayjs) => (
 				<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-					{Intl.DateTimeFormat(currentLocale, {
-						hour: 'numeric',
-						hour12: timeFormat === '12-hour',
-					}).format(date.toDate())}
+					{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
 				</div>
 			),
 		}),
-		[hours, currentLocale, timeFormat]
+		[hours, timeFormat]
 	)
 
 	const columns = useMemo(

@@ -1,11 +1,11 @@
 import { memo } from 'react'
 import { DraggableEvent } from '@/components/draggable-event/draggable-event'
 import { useProcessedWeekEvents } from '@/features/calendar/hooks/useProcessedWeekEvents'
-import type dayjs from '@/lib/configs/dayjs-config'
+import type { Dayjs } from '@/lib/configs/dayjs-config'
 import { EVENT_BAR_HEIGHT } from '@/lib/constants'
 
 export interface HorizontalGridEventsLayerProps {
-	days: dayjs.Dayjs[]
+	days: Dayjs[]
 	gridType?: 'day' | 'hour'
 	resourceId?: string | number
 	dayNumberHeight?: number
@@ -23,7 +23,7 @@ const NoMemoHorizontalGridEventsLayer: React.FC<
 	'data-testid': dataTestId,
 	allDay,
 }) => {
-	const weekStart = days.at(0).startOf('day')
+	const weekStart = days.at(0)?.startOf('day')
 
 	const processedWeekEvents = useProcessedWeekEvents({
 		days,
@@ -39,7 +39,7 @@ const NoMemoHorizontalGridEventsLayer: React.FC<
 			data-testid={dataTestId}
 		>
 			{processedWeekEvents.map((event) => {
-				const eventKey = `${event.id}-${event.position}-${weekStart.toISOString()}-${resourceId ?? 'no-resource'}`
+				const eventKey = `${event.id}-${event.position}-${weekStart?.toISOString()}-${resourceId ?? 'no-resource'}`
 
 				return (
 					<div
