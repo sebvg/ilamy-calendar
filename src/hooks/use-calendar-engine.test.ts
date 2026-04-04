@@ -752,6 +752,34 @@ describe('useCalendarEngine', () => {
 			expect(result.current.currentDate.format('HH:mm')).toBe('07:00')
 			expect(result.current.currentDate.format('Z')).toBe('-05:00')
 		})
+
+		it('should reactive update event times when timezone prop changes', () => {
+			const event = createEvent({
+				start: dayjs('2025-01-15T10:00:00Z'),
+				end: dayjs('2025-01-15T11:00:00Z'),
+			})
+			const events = [event]
+			const { result, rerender } = renderHook(
+				({ timezone }) =>
+					useCalendarEngine({
+						...defaultConfig,
+						events,
+						timezone,
+					}),
+				{ initialProps: { timezone: 'UTC' } }
+			)
+
+			expect(result.current.rawEvents[0].start.format('HH:mm')).toBe('10:00')
+
+			// Change to Tokyo (UTC+9)
+			act(() => {
+				rerender({ timezone: 'Asia/Tokyo' })
+			})
+
+			// 10:00 UTC should now be 19:00 in Tokyo
+			expect(result.current.rawEvents[0].start.format('HH:mm')).toBe('19:00')
+			expect(result.current.rawEvents[0].start.format('Z')).toBe('+09:00')
+		})
 	})
 
 	describe('onDateChange range reporting (Strict Analysis)', () => {

@@ -215,6 +215,13 @@ export const useCalendarEngine = (
 		if (timezone && timezone !== lastTimezoneProp.current) {
 			dayjs.tz.setDefault(timezone)
 			setCurrentDate((prev) => prev.tz(timezone))
+			setCurrentEvents((prev) =>
+				prev.map((e) => ({
+					...e,
+					start: e.start.tz(timezone),
+					end: e.end.tz(timezone),
+				}))
+			)
 			lastTimezoneProp.current = timezone
 		}
 	}, [timezone])
