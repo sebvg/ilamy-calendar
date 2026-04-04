@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v1.5.0](https://github.com/kcsujeet/ilamy-calendar/compare/v1.4.0...v1.5.0)
+
+> 4 April 2026
+
+##### Breaking Changes
+
+- ⚠️ **`onDateChange` signature changed**: Now receives `(date: Dayjs, range: { start: Dayjs; end: Dayjs })` instead of `(date: Dayjs)`. Update your handler to accept the second argument, or ignore it if not needed. ([`#103`](https://github.com/kcsujeet/ilamy-calendar/pull/103))
+
+##### Features
+
+- feat: add full timezone support — `timezone` prop enables timezone-aware rendering via `dayjs.tz`, with automatic conversion of `currentDate` and event times when timezone changes ([`#92`](https://github.com/kcsujeet/ilamy-calendar/pull/92))
+- feat: add `fixTimezoneOffset` dayjs plugin to preserve correct UTC offsets across `.startOf()`/`.endOf()` calls during DST transitions ([`#92`](https://github.com/kcsujeet/ilamy-calendar/pull/92))
+- feat: replace timezone Select with searchable Combobox and add InputGroup/Textarea UI components ([`#92`](https://github.com/kcsujeet/ilamy-calendar/pull/92))
+- feat: add `data` field to `Resource` interface for custom metadata ([`#102`](https://github.com/kcsujeet/ilamy-calendar/pull/102))
+- feat: add visible date range to `onDateChange` callback — enables efficient backend fetching of events for the currently visible period ([`#103`](https://github.com/kcsujeet/ilamy-calendar/pull/103))
+
+##### Performance
+
+- perf: row-level event computation sharing — `useProcessedWeekEvents` lifted to row level, reducing 48 filter passes to 6 per render ([`#105`](https://github.com/kcsujeet/ilamy-calendar/pull/105))
+- perf: remove `isDeepEqual` from events sync effect, guard locale/timezone effects with refs to skip redundant mount-time updates ([`#105`](https://github.com/kcsujeet/ilamy-calendar/pull/105))
+
+##### Fixes
+
+- fix: resolve timezone-related date shifts where `.startOf()`/`.endOf()` dropped timezone info near DST boundaries ([`#92`](https://github.com/kcsujeet/ilamy-calendar/pull/92))
+- fix: resolve 52 TypeScript errors after stricter type checking ([`#92`](https://github.com/kcsujeet/ilamy-calendar/pull/92))
+- fix: header dropdown date sync ([`#95`](https://github.com/kcsujeet/ilamy-calendar/pull/95)) - Thanks [@sumanthneerumalla](https://github.com/sumanthneerumalla)!
+- fix: resource horizontal view bugs ([`#88`](https://github.com/kcsujeet/ilamy-calendar/pull/88)) - Thanks [@sumanthneerumalla](https://github.com/sumanthneerumalla)!
+
 #### [v1.4.0](https://github.com/kcsujeet/ilamy-calendar/compare/v1.3.3...v1.4.0)
 
 > 1 March 2026
