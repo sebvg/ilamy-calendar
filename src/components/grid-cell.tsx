@@ -23,6 +23,7 @@ interface GridProps {
 	showDayNumber?: boolean // Flag to show or hide the day number
 	children?: React.ReactNode
 	'data-testid'?: string
+	precomputedEvents?: CalendarEvent[]
 }
 
 const NoMemoGridCell: React.FC<GridProps> = ({
@@ -34,6 +35,7 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 	gridType = 'day',
 	shouldRenderEvents = true,
 	allDay = false,
+	precomputedEvents,
 	'data-testid': dataTestId,
 	showDayNumber = false,
 	children,
@@ -60,6 +62,11 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 			return []
 		}
 
+		// Use pre-computed events from the row level when available
+		if (precomputedEvents) {
+			return precomputedEvents
+		}
+
 		let todayEvents = getEventsForDateRange(
 			day.startOf(gridType),
 			day.endOf(gridType)
@@ -79,6 +86,7 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 
 		return todayEvents
 	}, [
+		precomputedEvents,
 		day,
 		resourceId,
 		getEventsForDateRange,
