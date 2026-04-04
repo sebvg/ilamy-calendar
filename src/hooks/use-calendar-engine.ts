@@ -214,6 +214,7 @@ export const useCalendarEngine = (
 	useEffect(() => {
 		if (timezone && timezone !== lastTimezoneProp.current) {
 			dayjs.tz.setDefault(timezone)
+			setCurrentDate((prev) => prev.tz(timezone))
 			lastTimezoneProp.current = timezone
 		}
 	}, [timezone])
