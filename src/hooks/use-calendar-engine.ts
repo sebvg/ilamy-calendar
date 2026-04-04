@@ -359,8 +359,11 @@ export const useCalendarEngine = (
 		(newView: CalendarView) => {
 			setView(newView)
 			onViewChange?.(newView)
+			// View change affects visible range — notify consumers
+			const range = calculateViewRange(currentDate, newView, firstDayOfWeek)
+			onDateChange?.(currentDate, range)
 		},
-		[onViewChange]
+		[onViewChange, onDateChange, currentDate, firstDayOfWeek]
 	)
 
 	const findParentRecurringEvent = useCallback(
