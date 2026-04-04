@@ -13,7 +13,6 @@ import dayjs, {
 import { defaultTranslations } from '@/lib/translations/default'
 import type { Translations, TranslatorFunction } from '@/lib/translations/types'
 import { getMonthWeeks, getWeekDays } from '@/lib/utils/date-utils'
-import { isDeepEqual } from '@/lib/utils/deep-equal'
 import type { CalendarView } from '@/types'
 import { DAY_MAX_EVENTS_DEFAULT } from '../lib/constants'
 
@@ -140,6 +139,8 @@ export const useCalendarEngine = (
 	const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null)
 	const [currentLocale, setCurrentLocale] = useState(locale || 'en')
 	const lastEventsProp = useRef(events)
+	const lastTimezoneProp = useRef(timezone)
+	const lastLocaleProp = useRef(locale)
 
 	const t: TranslatorFunction = useMemo(() => {
 		if (translator) {
@@ -196,31 +197,24 @@ export const useCalendarEngine = (
 
 	useEffect(() => {
 		if (events !== lastEventsProp.current) {
-			if (!isDeepEqual(events, currentEvents)) {
-				setCurrentEvents(events)
-			}
+			setCurrentEvents(events)
 			lastEventsProp.current = events
 		}
-	}, [events, currentEvents])
+	}, [events])
+
 	useEffect(() => {
-		if (locale) {
+		if (locale && locale !== lastLocaleProp.current) {
 			setCurrentLocale(locale)
 			dayjs.locale(locale)
 			setCurrentDate((prevDate) => prevDate.locale(locale))
+			lastLocaleProp.current = locale
 		}
 	}, [locale])
+
 	useEffect(() => {
-		if (timezone) {
+		if (timezone && timezone !== lastTimezoneProp.current) {
 			dayjs.tz.setDefault(timezone)
-			// Update currentDate and currentEvents to the new timezone
-			setCurrentDate((prev) => prev.tz(timezone))
-			setCurrentEvents((prev) =>
-				prev.map((e) => ({
-					...e,
-					start: e.start.tz(timezone),
-					end: e.end.tz(timezone),
-				}))
-			)
+			lastTimezoneProp.current = timezone
 		}
 	}, [timezone])
 
