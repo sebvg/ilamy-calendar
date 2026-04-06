@@ -68,6 +68,8 @@ interface DemoCalendarSettingsProps {
 	setUseCustomClasses: (value: boolean) => void
 	useCustomTimeIndicator: boolean
 	setUseCustomTimeIndicator: (value: boolean) => void
+	useCustomHourRenderer: boolean
+	setUseCustomHourRenderer: (value: boolean) => void
 	// Resource calendar specific props
 	isResourceCalendar?: boolean
 	orientation?: 'horizontal' | 'vertical'
@@ -121,6 +123,8 @@ export function DemoCalendarSettings({
 	setUseCustomClasses,
 	useCustomTimeIndicator,
 	setUseCustomTimeIndicator,
+	useCustomHourRenderer,
+	setUseCustomHourRenderer,
 	// Resource calendar props
 	isResourceCalendar,
 	orientation,
@@ -535,6 +539,21 @@ export function DemoCalendarSettings({
 						htmlFor="customTimeIndicator"
 					>
 						Use custom time indicator
+					</label>
+				</div>
+				<div className="flex items-center space-x-2">
+					<Checkbox
+						checked={useCustomHourRenderer}
+						id="customHourRenderer"
+						onCheckedChange={() =>
+							setUseCustomHourRenderer(!useCustomHourRenderer)
+						}
+					/>
+					<label
+						className="text-sm font-medium leading-none cursor-pointer"
+						htmlFor="customHourRenderer"
+					>
+						Use custom hour renderer
 					</label>
 				</div>
 

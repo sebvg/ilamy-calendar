@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 import { AnimatedSection } from '@/components/animations/animated-section'
+import { HourLabel } from '@/components/hour-label/hour-label'
 import type { BusinessHours } from '@/components/types'
 import { getViewHours } from '@/features/calendar/utils/view-hours'
 import { ResourceEventGrid } from '@/features/resource-calendar/components/resource-event-grid'
@@ -14,7 +15,6 @@ export const ResourceWeekHorizontal: React.FC = () => {
 		currentDate,
 		firstDayOfWeek,
 		t,
-		timeFormat,
 		businessHours,
 		hideNonBusinessHours,
 		getVisibleResources,
@@ -110,7 +110,7 @@ export const ResourceWeekHorizontal: React.FC = () => {
 								key={`${key}-animated`}
 								transitionKey={`${key}-motion`}
 							>
-								{col.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+								<HourLabel date={col} />
 							</AnimatedSection>
 						)
 					})}

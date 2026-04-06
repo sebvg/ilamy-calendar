@@ -272,4 +272,9 @@ export interface IlamyCalendarProps {
 	 * @example ['saturday', 'sunday'] // Hide weekends
 	 */
 	hiddenDays?: WeekDays[]
+	/**
+	 * Custom render function for the hour labels in the gutter/header.
+	 * Receives a Dayjs object for the hour and should return a React node.
+	 */
+	renderHour?: (date: Dayjs) => React.ReactNode
 }

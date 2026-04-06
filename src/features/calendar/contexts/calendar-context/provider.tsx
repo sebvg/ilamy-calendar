@@ -51,6 +51,7 @@ export interface CalendarProviderProps {
 	renderCurrentTimeIndicator?: (
 		props: RenderCurrentTimeIndicatorProps
 	) => ReactNode
+	renderHour?: (date: Dayjs) => ReactNode
 	hideNonBusinessHours?: boolean
 	hiddenDays?: Set<number>
 }
@@ -87,6 +88,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
 	timeFormat = '12-hour',
 	classesOverride,
 	renderCurrentTimeIndicator,
+	renderHour,
 	hideNonBusinessHours = false,
 	hiddenDays,
 }) => {
@@ -193,6 +195,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
 			timeFormat,
 			classesOverride,
 			renderCurrentTimeIndicator,
+			renderHour,
 			hideNonBusinessHours,
 			hiddenDays,
 		}),
@@ -217,6 +220,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
 			timeFormat,
 			classesOverride,
 			renderCurrentTimeIndicator,
+			renderHour,
 			hideNonBusinessHours,
 			hiddenDays,
 		]

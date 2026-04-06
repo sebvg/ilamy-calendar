@@ -3,7 +3,7 @@ import { cleanup, render, screen } from '@testing-library/react'
 import type { CalendarEvent } from '@/components/types'
 import { CalendarProvider } from '@/features/calendar/contexts/calendar-context/provider'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
-import dayjs from '@/lib/configs/dayjs-config'
+import dayjs, { type Dayjs } from '@/lib/configs/dayjs-config'
 import { generateMockEvents } from '@/lib/utils/generator'
 import { WeekView } from './week-view'
 
@@ -1024,5 +1024,29 @@ describe('WeekView', () => {
 		// Event starting at 1pm (4 hours into 8-hour grid) should be at 50%
 		const style = eventWrapper?.getAttribute('style') || ''
 		expect(style).toContain('top: 50%')
+	})
+
+	test('customizes hour rendering when renderHour prop is provided', () => {
+		cleanup()
+		const renderHour = (date: Dayjs) => (
+			<span data-testid={`custom-hour-${date.format('HH')}`}>
+				{date.format('HH:mm')}
+			</span>
+		)
+
+		renderWeekView({ renderHour })
+
+		// Check that the custom rendering is used
+		const customMidnights = screen.getAllByTestId('custom-hour-00')
+		expect(customMidnights.length).toBe(1) // In WeekView, it's only in the time column
+		expect(customMidnights[0]).toHaveTextContent('00:00')
+
+		const customNoons = screen.getAllByTestId('custom-hour-12')
+		expect(customNoons.length).toBe(1)
+		expect(customNoons[0]).toHaveTextContent('12:00')
+
+		const customLastHours = screen.getAllByTestId('custom-hour-23')
+		expect(customLastHours.length).toBe(1)
+		expect(customLastHours[0]).toHaveTextContent('23:00')
 	})
 })

@@ -2,6 +2,7 @@ import type React from 'react'
 import { useMemo } from 'react'
 import { AllDayRow } from '@/components/all-day-row/all-day-row'
 import { AnimatedSection } from '@/components/animations/animated-section'
+import { HourLabel } from '@/components/hour-label/hour-label'
 import { VerticalGrid } from '@/components/vertical-grid/vertical-grid'
 import { getViewHours } from '@/features/calendar/utils/view-hours'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
@@ -20,7 +21,6 @@ export const WeekView: React.FC = () => {
 		firstDayOfWeek,
 		selectDate,
 		openEventForm,
-		timeFormat,
 		businessHours,
 		hideNonBusinessHours,
 		hiddenDays,
@@ -59,7 +59,7 @@ export const WeekView: React.FC = () => {
 		noEvents: true,
 		renderCell: (date: Dayjs) => (
 			<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-				{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+				<HourLabel date={date} />
 			</div>
 		),
 	}

@@ -311,6 +311,7 @@ export function DemoPage() {
 	const [timeFormat, setTimeFormat] = useState<TimeFormat>('12-hour')
 	const [useCustomClasses, setUseCustomClasses] = useState(false)
 	const [useCustomTimeIndicator, setUseCustomTimeIndicator] = useState(false)
+	const [useCustomHourRenderer, setUseCustomHourRenderer] = useState(false)
 	const [hiddenDays, setHiddenDays] = useState<WeekDays[]>([])
 
 	// Resource calendar settings
@@ -337,7 +338,6 @@ export function DemoPage() {
 			</div>
 		)
 	}
-
 	// Custom current time indicator renderer
 	const renderCurrentTimeIndicator = ({
 		currentTime,
@@ -362,6 +362,18 @@ export function DemoPage() {
 				)}
 				{/* Red line extends across all columns */}
 				<div className="flex-1 bg-red-500" />
+			</div>
+		)
+	}
+
+	// Custom hour renderer function
+	const renderHour = (date: Dayjs) => {
+		return (
+			<div className="flex flex-col items-center leading-tight">
+				<span className="font-bold text-sm">{date.format('h')}</span>
+				<span className="text-[10px] opacity-60 uppercase font-medium">
+					{date.format('A')}
+				</span>
 			</div>
 		)
 	}
@@ -424,6 +436,7 @@ export function DemoPage() {
 						setTimezone={setTimezone}
 						setUseCustomClasses={setUseCustomClasses}
 						setUseCustomEventRenderer={setUseCustomEventRenderer}
+						setUseCustomHourRenderer={setUseCustomHourRenderer}
 						setUseCustomOnDateClick={setUseCustomOnDateClick}
 						setUseCustomOnEventClick={setUseCustomOnEventClick}
 						setUseCustomTimeIndicator={setUseCustomTimeIndicator}
@@ -433,6 +446,7 @@ export function DemoPage() {
 						useCustomClasses={useCustomClasses}
 						// Resource calendar specific props
 						useCustomEventRenderer={useCustomEventRenderer}
+						useCustomHourRenderer={useCustomHourRenderer}
 						useCustomOnDateClick={useCustomOnDateClick}
 						useCustomOnEventClick={useCustomOnEventClick}
 						useCustomTimeIndicator={useCustomTimeIndicator}
@@ -518,6 +532,7 @@ export function DemoPage() {
 											: undefined
 									}
 									renderEvent={useCustomEventRenderer ? renderEvent : undefined}
+									renderHour={useCustomHourRenderer ? renderHour : undefined}
 									stickyViewHeader={stickyViewHeader}
 									timeFormat={timeFormat}
 									timezone={timezone}
@@ -562,6 +577,7 @@ export function DemoPage() {
 											: undefined
 									}
 									renderEvent={useCustomEventRenderer ? renderEvent : undefined}
+									renderHour={useCustomHourRenderer ? renderHour : undefined}
 									resources={demoResources}
 									stickyViewHeader={stickyViewHeader}
 									timeFormat={timeFormat}
