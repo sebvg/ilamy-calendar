@@ -226,39 +226,38 @@ export const useCalendarEngine = (
 		}
 	}, [timezone])
 
-	const selectDate = useCallback(
-		(date: Dayjs) => {
-			setCurrentDate(date)
-			const range = calculateViewRange(date, view, firstDayOfWeek)
-			onDateChange?.(date, range)
+	const updateDateAndNotify = useCallback(
+		(newDate: Dayjs) => {
+			setCurrentDate(newDate)
+			const range = calculateViewRange(newDate, view, firstDayOfWeek)
+			onDateChange?.(newDate, range)
 		},
 		[onDateChange, view, firstDayOfWeek]
 	)
 
+	const selectDate = useCallback(
+		(date: Dayjs) => updateDateAndNotify(date),
+		[updateDateAndNotify]
+	)
+
 	const navigatePeriod = useCallback(
 		(direction: 1 | -1) => {
-			setCurrentDate((prev) => {
-				const newDate =
-					direction === 1
-						? prev.add(1, VIEW_UNITS[view])
-						: prev.subtract(1, VIEW_UNITS[view])
-				const range = calculateViewRange(newDate, view, firstDayOfWeek)
-				onDateChange?.(newDate, range)
-				return newDate
-			})
+			const newDate =
+				direction === 1
+					? currentDate.add(1, VIEW_UNITS[view])
+					: currentDate.subtract(1, VIEW_UNITS[view])
+			updateDateAndNotify(newDate)
 		},
-		[view, onDateChange, firstDayOfWeek]
+		[currentDate, view, updateDateAndNotify]
 	)
 
 	const nextPeriod = useCallback(() => navigatePeriod(1), [navigatePeriod])
 	const prevPeriod = useCallback(() => navigatePeriod(-1), [navigatePeriod])
 
-	const today = useCallback(() => {
-		const newDate = dayjs()
-		setCurrentDate(newDate)
-		const range = calculateViewRange(newDate, view, firstDayOfWeek)
-		onDateChange?.(newDate, range)
-	}, [onDateChange, view, firstDayOfWeek])
+	const today = useCallback(
+		() => updateDateAndNotify(dayjs()),
+		[updateDateAndNotify]
+	)
 
 	const addEvent = useCallback(
 		(event: CalendarEvent) => {
@@ -270,18 +269,18 @@ export const useCalendarEngine = (
 
 	const updateEvent = useCallback(
 		(eventId: string | number, updates: Partial<CalendarEvent>) => {
+			const eventToUpdate = currentEvents.find((event) => event.id === eventId)
+			if (!eventToUpdate) {
+				return
+			}
+
+			const newEvent = { ...eventToUpdate, ...updates }
 			setCurrentEvents((prev) =>
-				prev.map((event) => {
-					if (event.id !== eventId) {
-						return event
-					}
-					const newEvent = { ...event, ...updates }
-					onEventUpdate?.(newEvent)
-					return newEvent
-				})
+				prev.map((event) => (event.id === eventId ? newEvent : event))
 			)
+			onEventUpdate?.(newEvent)
 		},
-		[onEventUpdate]
+		[currentEvents, onEventUpdate]
 	)
 
 	const updateRecurringEvent = useCallback(
@@ -319,15 +318,15 @@ export const useCalendarEngine = (
 
 	const deleteEvent = useCallback(
 		(eventId: string | number) => {
-			setCurrentEvents((prev) => {
-				const eventToDelete = prev.find((e) => e.id === eventId)
-				if (eventToDelete) {
-					onEventDelete?.(eventToDelete)
-				}
-				return prev.filter((e) => e.id !== eventId)
-			})
+			const eventToDelete = currentEvents.find((e) => e.id === eventId)
+			if (!eventToDelete) {
+				return
+			}
+
+			setCurrentEvents((prev) => prev.filter((e) => e.id !== eventId))
+			onEventDelete?.(eventToDelete)
 		},
-		[onEventDelete]
+		[currentEvents, onEventDelete]
 	)
 
 	const openEventForm = useCallback(
