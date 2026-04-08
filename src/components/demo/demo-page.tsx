@@ -318,6 +318,8 @@ export function DemoPage() {
 		'horizontal'
 	)
 
+	const [showHoursOnWeekView, setShowHoursOnWeekView] = useState(true)
+
 	const calendarKey = `${locale}-${initialView}-${initialDate?.toISOString() || 'today'}-${timeFormat}-${useCustomTimeIndicator}`
 
 	// Custom event renderer function
@@ -404,6 +406,7 @@ export function DemoPage() {
 						isResourceCalendar={calendarType === 'resource'}
 						locale={locale}
 						orientation={orientation}
+						showHoursOnWeekView={showHoursOnWeekView}
 						setBusinessEndTime={setBusinessEndTime}
 						setBusinessStartTime={setBusinessStartTime}
 						setCalendarHeight={setCalendarHeight}
@@ -427,6 +430,7 @@ export function DemoPage() {
 						setUseCustomOnDateClick={setUseCustomOnDateClick}
 						setUseCustomOnEventClick={setUseCustomOnEventClick}
 						setUseCustomTimeIndicator={setUseCustomTimeIndicator}
+						setShowHoursOnWeekView={setShowHoursOnWeekView}
 						stickyViewHeader={stickyViewHeader}
 						timeFormat={timeFormat}
 						timezone={timezone}
@@ -566,6 +570,7 @@ export function DemoPage() {
 									stickyViewHeader={stickyViewHeader}
 									timeFormat={timeFormat}
 									timezone={timezone}
+									showHoursOnWeekView={showHoursOnWeekView}
 								/>
 							)}
 						</CardContent>

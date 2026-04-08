@@ -22,6 +22,7 @@ export const ResourceWeekVertical: React.FC = () => {
 		businessHours,
 		hideNonBusinessHours,
 		hiddenDays,
+		showHoursOnWeekView,
 	} = useSmartCalendarContext()
 
 	const resources = getVisibleResources()
@@ -54,26 +55,42 @@ export const ResourceWeekVertical: React.FC = () => {
 	)
 
 	const firstCol = useMemo(
-		() => ({
-			id: 'time-col',
-			days: hours,
-			day: undefined,
-			className:
-				'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
-			gridType: 'hour' as const,
-			noEvents: true,
-			renderCell: (date: Dayjs) => (
-				<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-					{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
-				</div>
-			),
-		}),
-		[hours, timeFormat]
+		() => (
+			showHoursOnWeekView ? {
+				id: 'time-col',
+				days: hours,
+				day: undefined,
+				className:
+					'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
+				gridType: 'hour' as const,
+				noEvents: true,
+				renderCell: (date: Dayjs) => (
+					<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
+						{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+					</div>
+				),
+			} : {
+				id: 'date-col',
+				days: weekDays,
+				day: undefined,
+				className: 'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
+				gridType: 'day' as const,
+				noEvents: true,
+				renderCell: (date: Dayjs) => (
+					<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
+						<span>{date.format('D')}</span>
+						<span>{date.format('ddd')}</span>
+					</div>
+				),
+				cellHeight: 72
+
+			}),
+		[hours, timeFormat, showHoursOnWeekView, weekDays]
 	)
 
 	const columns = useMemo(
 		() =>
-			resources.flatMap((resource) =>
+			showHoursOnWeekView ? resources.flatMap((resource) =>
 				visibleDays.map((day) => ({
 					id: `day-col-${day.format('YYYY-MM-DD')}-resource-${resource.id}`,
 					resourceId: resource.id,
@@ -90,9 +107,41 @@ export const ResourceWeekVertical: React.FC = () => {
 					}),
 					gridType: 'hour' as const,
 				}))
-			),
+			) : resources.map((resource) => ({
+				id: `week-col-resource-${resource.id}`,
+				day: undefined,
+				resourceId: resource.id,
+				days: weekDays,
+				gridType: 'day' as const,
+				cellHeight: 72,
+			})),
 		[resources, weekDays, businessHours, hideNonBusinessHours, visibleDays.map]
 	)
+
+	if (!showHoursOnWeekView) {
+		return (
+			<VerticalGrid
+				classes={{ header: 'w-full', body: 'w-full' }}
+				columns={[firstCol, ...columns]}
+				data-testid="resource-week-vertical-grid"
+			>
+				{/* Header */}
+				<div
+					className={'flex border-b h-12 flex-1'}
+					data-testid="resource-week-header"
+				>
+					<div className="shrink-0 border-r w-16 sticky top-0 left-0 bg-background z-20" />
+					{resources.map((resource) => (
+						<ResourceCell
+							className="min-w-50 flex-1"
+							key={`resource-cell-${resource.id}`}
+							resource={resource}
+						/>
+					))}
+				</div>
+			</VerticalGrid>
+		)
+	}
 
 	return (
 		<VerticalGrid

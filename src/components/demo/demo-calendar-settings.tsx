@@ -71,7 +71,9 @@ interface DemoCalendarSettingsProps {
 	// Resource calendar specific props
 	isResourceCalendar?: boolean
 	orientation?: 'horizontal' | 'vertical'
+	showHoursOnWeekView?: boolean
 	setOrientation?: (value: 'horizontal' | 'vertical') => void
+	setShowHoursOnWeekView?: (value: boolean) => void
 	// Business hours settings
 	hideNonBusinessHours: boolean
 	setHideNonBusinessHours: (value: boolean) => void
@@ -125,6 +127,8 @@ export function DemoCalendarSettings({
 	isResourceCalendar,
 	orientation,
 	setOrientation,
+	showHoursOnWeekView,
+	setShowHoursOnWeekView,
 	hideNonBusinessHours,
 	setHideNonBusinessHours,
 	businessStartTime,
@@ -209,6 +213,21 @@ export function DemoCalendarSettings({
 								Vertical
 							</Button>
 						</div>
+					</div>
+				)}
+				{isResourceCalendar && (
+					<div className="flex items-center space-x-2">
+						<Checkbox
+							checked={showHoursOnWeekView}
+							id="showHoursOnWeekView"
+							onCheckedChange={() => setShowHoursOnWeekView?.(!showHoursOnWeekView)}
+						/>
+						<label
+							className="text-sm font-medium leading-none cursor-pointer ml-2"
+							htmlFor="showHoursOnWeekView"
+						>
+							Show Hours on Week View
+						</label>
 					</div>
 				)}
 				<div>

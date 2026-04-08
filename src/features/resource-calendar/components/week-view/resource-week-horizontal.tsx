@@ -18,6 +18,7 @@ export const ResourceWeekHorizontal: React.FC = () => {
 		businessHours,
 		hideNonBusinessHours,
 		getVisibleResources,
+		showHoursOnWeekView,
 	} = useSmartCalendarContext()
 
 	const resources = getVisibleResources()
@@ -53,12 +54,12 @@ export const ResourceWeekHorizontal: React.FC = () => {
 	return (
 		<ResourceEventGrid
 			classes={{
-				header: 'h-24 min-w-full',
+				header: `${showHoursOnWeekView ? 'h-24' : 'h-12'} min-w-full`,
 				body: 'min-w-full',
 				cell: 'min-w-20 flex-1',
 			}}
-			days={weekHours}
-			gridType="hour"
+			days={showHoursOnWeekView ? weekHours : weekDays}
+			gridType={showHoursOnWeekView ? "hour" : "day"}
 		>
 			<div className="w-20 sm:w-40 border-b border-r shrink-0 flex justify-center items-center sticky top-0 left-0 bg-background z-20">
 				<div className="text-sm">{t('resources')}</div>
@@ -82,7 +83,7 @@ export const ResourceWeekHorizontal: React.FC = () => {
 								key={`${key}-animated`}
 								transitionKey={`${key}-motion`}
 							>
-								<div className="sticky left-1/2">
+								<div className={`${showHoursOnWeekView ? "sticky left-1/2" : "w-full text-center"}`}>
 									<div className="text-sm">{day.format('ddd')}</div>
 									<div className="text-xs text-muted-foreground">
 										{day.format('M/D')}
@@ -94,7 +95,7 @@ export const ResourceWeekHorizontal: React.FC = () => {
 				</div>
 
 				{/* Time header row */}
-				<div className="flex h-12 border-b">
+				{showHoursOnWeekView && (<div className="flex h-12 border-b">
 					{weekHours.flat().map((col, index) => {
 						const isNowHour = col.isSame(dayjs(), 'hour')
 						const key = `resource-week-header-${col.toISOString()}-hour-${index}`
@@ -113,8 +114,8 @@ export const ResourceWeekHorizontal: React.FC = () => {
 								{col.format(timeFormat === '12-hour' ? 'h A' : 'H')}
 							</AnimatedSection>
 						)
-					})}
-				</div>
+					}) }
+				</div>)}
 			</div>
 		</ResourceEventGrid>
 	)

@@ -33,6 +33,7 @@ export interface IlamyResourceCalendarProps
 	 * - "vertical": Resources are columns, time is rows
 	 */
 	orientation?: 'horizontal' | 'vertical'
+	showHoursOnWeekView?: boolean
 }
 
 /**
