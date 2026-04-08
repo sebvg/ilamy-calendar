@@ -59,7 +59,7 @@ export const ResourceWeekHorizontal: React.FC = () => {
 				cell: 'min-w-20 flex-1',
 			}}
 			days={showHoursOnWeekView ? weekHours : weekDays}
-			gridType={showHoursOnWeekView ? "hour" : "day"}
+			gridType={showHoursOnWeekView ? 'hour' : 'day'}
 		>
 			<div className="w-20 sm:w-40 border-b border-r shrink-0 flex justify-center items-center sticky top-0 left-0 bg-background z-20">
 				<div className="text-sm">{t('resources')}</div>
@@ -83,7 +83,9 @@ export const ResourceWeekHorizontal: React.FC = () => {
 								key={`${key}-animated`}
 								transitionKey={`${key}-motion`}
 							>
-								<div className={`${showHoursOnWeekView ? "sticky left-1/2" : "w-full text-center"}`}>
+								<div
+									className={`${showHoursOnWeekView ? 'sticky left-1/2' : 'w-full text-center'}`}
+								>
 									<div className="text-sm">{day.format('ddd')}</div>
 									<div className="text-xs text-muted-foreground">
 										{day.format('M/D')}
@@ -95,27 +97,29 @@ export const ResourceWeekHorizontal: React.FC = () => {
 				</div>
 
 				{/* Time header row */}
-				{showHoursOnWeekView && (<div className="flex h-12 border-b">
-					{weekHours.flat().map((col, index) => {
-						const isNowHour = col.isSame(dayjs(), 'hour')
-						const key = `resource-week-header-${col.toISOString()}-hour-${index}`
+				{showHoursOnWeekView && (
+					<div className="flex h-12 border-b">
+						{weekHours.flat().map((col, index) => {
+							const isNowHour = col.isSame(dayjs(), 'hour')
+							const key = `resource-week-header-${col.toISOString()}-hour-${index}`
 
-						return (
-							<AnimatedSection
-								className={cn(
-									'min-w-20 flex-1 border-r flex items-center justify-center text-xs shrink-0',
-									isNowHour && 'bg-blue-50 text-blue-600 font-medium'
-								)}
-								data-testid={`resource-week-time-label-${col.format('HH')}`}
-								delay={index * 0.005}
-								key={`${key}-animated`}
-								transitionKey={`${key}-motion`}
-							>
-								{col.format(timeFormat === '12-hour' ? 'h A' : 'H')}
-							</AnimatedSection>
-						)
-					}) }
-				</div>)}
+							return (
+								<AnimatedSection
+									className={cn(
+										'min-w-20 flex-1 border-r flex items-center justify-center text-xs shrink-0',
+										isNowHour && 'bg-blue-50 text-blue-600 font-medium'
+									)}
+									data-testid={`resource-week-time-label-${col.format('HH')}`}
+									delay={index * 0.005}
+									key={`${key}-animated`}
+									transitionKey={`${key}-motion`}
+								>
+									{col.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+								</AnimatedSection>
+							)
+						})}
+					</div>
+				)}
 			</div>
 		</ResourceEventGrid>
 	)

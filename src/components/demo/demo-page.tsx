@@ -406,7 +406,6 @@ export function DemoPage() {
 						isResourceCalendar={calendarType === 'resource'}
 						locale={locale}
 						orientation={orientation}
-						showHoursOnWeekView={showHoursOnWeekView}
 						setBusinessEndTime={setBusinessEndTime}
 						setBusinessStartTime={setBusinessStartTime}
 						setCalendarHeight={setCalendarHeight}
@@ -422,6 +421,7 @@ export function DemoPage() {
 						setInitialView={setInitialView}
 						setLocale={setLocale}
 						setOrientation={setOrientation}
+						setShowHoursOnWeekView={setShowHoursOnWeekView}
 						setStickyHeader={setStickyHeader}
 						setTimeFormat={setTimeFormat}
 						setTimezone={setTimezone}
@@ -430,7 +430,7 @@ export function DemoPage() {
 						setUseCustomOnDateClick={setUseCustomOnDateClick}
 						setUseCustomOnEventClick={setUseCustomOnEventClick}
 						setUseCustomTimeIndicator={setUseCustomTimeIndicator}
-						setShowHoursOnWeekView={setShowHoursOnWeekView}
+						showHoursOnWeekView={showHoursOnWeekView}
 						stickyViewHeader={stickyViewHeader}
 						timeFormat={timeFormat}
 						timezone={timezone}
@@ -567,10 +567,10 @@ export function DemoPage() {
 									}
 									renderEvent={useCustomEventRenderer ? renderEvent : undefined}
 									resources={demoResources}
+									showHoursOnWeekView={showHoursOnWeekView}
 									stickyViewHeader={stickyViewHeader}
 									timeFormat={timeFormat}
 									timezone={timezone}
-									showHoursOnWeekView={showHoursOnWeekView}
 								/>
 							)}
 						</CardContent>

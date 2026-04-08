@@ -55,67 +55,78 @@ export const ResourceWeekVertical: React.FC = () => {
 	)
 
 	const firstCol = useMemo(
-		() => (
-			showHoursOnWeekView ? {
-				id: 'time-col',
-				days: hours,
-				day: undefined,
-				className:
-					'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
-				gridType: 'hour' as const,
-				noEvents: true,
-				renderCell: (date: Dayjs) => (
-					<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-						{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
-					</div>
-				),
-			} : {
-				id: 'date-col',
-				days: weekDays,
-				day: undefined,
-				className: 'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
-				gridType: 'day' as const,
-				noEvents: true,
-				renderCell: (date: Dayjs) => (
-					<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-						<span>{date.format('D')}</span>
-						<span>{date.format('ddd')}</span>
-					</div>
-				),
-				cellHeight: 72
-
-			}),
+		() =>
+			showHoursOnWeekView
+				? {
+						id: 'time-col',
+						days: hours,
+						day: undefined,
+						className:
+							'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
+						gridType: 'hour' as const,
+						noEvents: true,
+						renderCell: (date: Dayjs) => (
+							<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
+								{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+							</div>
+						),
+					}
+				: {
+						id: 'date-col',
+						days: weekDays,
+						day: undefined,
+						className:
+							'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
+						gridType: 'day' as const,
+						noEvents: true,
+						renderCell: (date: Dayjs) => (
+							<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
+								<span>{date.format('D')}</span>
+								<span>{date.format('ddd')}</span>
+							</div>
+						),
+						cellHeight: 72,
+					},
 		[hours, timeFormat, showHoursOnWeekView, weekDays]
 	)
 
 	const columns = useMemo(
 		() =>
-			showHoursOnWeekView ? resources.flatMap((resource) =>
-				visibleDays.map((day) => ({
-					id: `day-col-${day.format('YYYY-MM-DD')}-resource-${resource.id}`,
-					resourceId: resource.id,
-					resource,
-					day,
-					days: getViewHours({
-						referenceDate: day,
-						businessHours,
-						hideNonBusinessHours,
-						allDates: weekDays,
-						resourceBusinessHours: resources
-							.map((r) => r.businessHours)
-							.filter(Boolean) as (BusinessHours | BusinessHours[])[],
-					}),
-					gridType: 'hour' as const,
-				}))
-			) : resources.map((resource) => ({
-				id: `week-col-resource-${resource.id}`,
-				day: undefined,
-				resourceId: resource.id,
-				days: weekDays,
-				gridType: 'day' as const,
-				cellHeight: 72,
-			})),
-		[resources, weekDays, businessHours, hideNonBusinessHours, visibleDays.map]
+			showHoursOnWeekView
+				? resources.flatMap((resource) =>
+						visibleDays.map((day) => ({
+							id: `day-col-${day.format('YYYY-MM-DD')}-resource-${resource.id}`,
+							resourceId: resource.id,
+							resource,
+							day,
+							days: getViewHours({
+								referenceDate: day,
+								businessHours,
+								hideNonBusinessHours,
+								allDates: weekDays,
+								resourceBusinessHours: resources
+									.map((r) => r.businessHours)
+									.filter(Boolean) as (BusinessHours | BusinessHours[])[],
+							}),
+							gridType: 'hour' as const,
+						}))
+					)
+				: resources.map((resource) => ({
+						id: `week-col-resource-${resource.id}`,
+						day: undefined,
+						resourceId: resource.id,
+						days: weekDays,
+						gridType: 'day' as const,
+						cellHeight: 72,
+					})),
+		[
+			resources,
+			weekDays,
+			businessHours,
+			hideNonBusinessHours,
+			visibleDays.map,
+			showHoursOnWeekView,
+		]
 	)
 
 	if (!showHoursOnWeekView) {
@@ -208,7 +219,7 @@ export const ResourceWeekVertical: React.FC = () => {
 						</span>
 					</div>
 					{columns.map((col, index) => {
-						const day = col.day
+						const day = col.day as Dayjs
 						const key = `resource-week-header-${day.toISOString()}-hour-${col.resourceId}`
 
 						return (

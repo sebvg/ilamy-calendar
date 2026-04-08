@@ -220,7 +220,9 @@ export function DemoCalendarSettings({
 						<Checkbox
 							checked={showHoursOnWeekView}
 							id="showHoursOnWeekView"
-							onCheckedChange={() => setShowHoursOnWeekView?.(!showHoursOnWeekView)}
+							onCheckedChange={() =>
+								setShowHoursOnWeekView?.(!showHoursOnWeekView)
+							}
 						/>
 						<label
 							className="text-sm font-medium leading-none cursor-pointer ml-2"

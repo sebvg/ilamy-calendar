@@ -40,7 +40,7 @@ const NoMemoVerticalGridCol: React.FC<VerticalGridColProps> = ({
 	noEvents,
 	cellSlots = [60], // Default to full hour slots
 	isLastColumn,
-	cellHeight = 60
+	cellHeight = 60,
 }) => {
 	return (
 		<div
