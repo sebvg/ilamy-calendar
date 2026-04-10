@@ -1,5 +1,6 @@
 import { AllDayCell } from '@/components/all-day-row/all-day-cell'
 import { AllDayRow } from '@/components/all-day-row/all-day-row'
+import { HourLabel } from '@/components/hour-label/hour-label'
 import { ResourceCell } from '@/components/resource-cell'
 import type { BusinessHours } from '@/components/types'
 import { VerticalGrid } from '@/components/vertical-grid/vertical-grid'
@@ -11,7 +12,6 @@ export const ResourceDayVertical: React.FC = () => {
 	const {
 		currentDate,
 		getVisibleResources,
-		timeFormat,
 		businessHours,
 		hideNonBusinessHours,
 	} = useSmartCalendarContext()
@@ -37,7 +37,7 @@ export const ResourceDayVertical: React.FC = () => {
 		noEvents: true,
 		renderCell: (date: Dayjs) => (
 			<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-				{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+				<HourLabel date={date} />
 			</div>
 		),
 	}

@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { AllDayCell } from '@/components/all-day-row/all-day-cell'
 import { AllDayRow } from '@/components/all-day-row/all-day-row'
 import { AnimatedSection } from '@/components/animations/animated-section'
+import { HourLabel } from '@/components/hour-label/hour-label'
 import { ResourceCell } from '@/components/resource-cell'
 import type { BusinessHours } from '@/components/types'
 import { VerticalGrid } from '@/components/vertical-grid/vertical-grid'
@@ -17,7 +18,6 @@ export const ResourceWeekVertical: React.FC = () => {
 		currentDate,
 		getVisibleResources,
 		firstDayOfWeek,
-		timeFormat,
 		t,
 		businessHours,
 		hideNonBusinessHours,
@@ -64,11 +64,11 @@ export const ResourceWeekVertical: React.FC = () => {
 			noEvents: true,
 			renderCell: (date: Dayjs) => (
 				<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-					{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+					<HourLabel date={date} />
 				</div>
 			),
 		}),
-		[hours, timeFormat]
+		[hours]
 	)
 
 	const columns = useMemo(

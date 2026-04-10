@@ -9,6 +9,7 @@ import type {
 } from '@/features/calendar/types'
 import type { Resource } from '@/features/resource-calendar/types'
 import { useCalendarEngine } from '@/hooks/use-calendar-engine'
+import type { Dayjs } from '@/lib/configs/dayjs-config'
 import { ResourceCalendarContext } from './context'
 
 const getEventResourceIds = (event: CalendarEvent): (string | number)[] => {
@@ -30,6 +31,7 @@ interface ResourceCalendarProviderProps extends CalendarProviderProps {
 	renderCurrentTimeIndicator?: (
 		props: RenderCurrentTimeIndicatorProps
 	) => React.ReactNode
+	renderHour?: (date: Dayjs) => React.ReactNode
 	hideNonBusinessHours?: boolean
 }
 
@@ -70,6 +72,7 @@ export const ResourceCalendarProvider: React.FC<
 	classesOverride,
 	orientation = 'horizontal',
 	renderCurrentTimeIndicator,
+	renderHour,
 	hideNonBusinessHours = false,
 	hiddenDays,
 }) => {
@@ -280,6 +283,7 @@ export const ResourceCalendarProvider: React.FC<
 			classesOverride,
 			orientation,
 			renderCurrentTimeIndicator,
+			renderHour,
 			hideNonBusinessHours,
 			hiddenDays,
 		}),
@@ -318,6 +322,7 @@ export const ResourceCalendarProvider: React.FC<
 			classesOverride,
 			orientation,
 			renderCurrentTimeIndicator,
+			renderHour,
 			hideNonBusinessHours,
 			hiddenDays,
 		]
