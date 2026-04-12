@@ -328,13 +328,18 @@ export function DemoPage() {
 		return (
 			<div
 				className={cn(
-					'border-primary border-1 border-l-2 px-2 truncate w-full h-full',
+					'border-primary border-1 border-l-2 px-2 w-full h-full overflow-clip',
 					backgroundColor,
 					color
 				)}
 				style={{ backgroundColor, color }}
 			>
-				{event.title}
+				<p className="text-[10px] font-semibold truncate leading-tight">
+					{event.title}
+				</p>
+				<p className="text-[8px] truncate opacity-80 leading-tight">
+					{event.start.format('h:mm A')} - {event.end.format('h:mm A')}
+				</p>
 			</div>
 		)
 	}
