@@ -60,6 +60,8 @@ interface DemoCalendarSettingsProps {
 	setCalendarHeight: (value: string) => void
 	dayMaxEvents: number
 	setDayMaxEvents: (value: number) => void
+	eventHeight: number
+	setEventHeight: (value: number) => void
 	stickyViewHeader?: boolean
 	setStickyHeader?: (value: boolean) => void
 	timeFormat: TimeFormat
@@ -115,6 +117,8 @@ export function DemoCalendarSettings({
 	setCalendarHeight,
 	dayMaxEvents,
 	setDayMaxEvents,
+	eventHeight,
+	setEventHeight,
 	stickyViewHeader,
 	setStickyHeader,
 	timeFormat,
@@ -384,6 +388,27 @@ export function DemoCalendarSettings({
 							<SelectItem value="4">4 events</SelectItem>
 							<SelectItem value="5">5 events</SelectItem>
 							<SelectItem value="999">No limit</SelectItem>
+						</SelectContent>
+					</Select>
+				</div>
+				<div>
+					<label className="block text-sm text-left font-medium mb-1">
+						Event Bar Height
+					</label>
+					<Select
+						onValueChange={(value) =>
+							setEventHeight(Number.parseInt(value, 10))
+						}
+						value={eventHeight.toString()}
+					>
+						<SelectTrigger className="w-full">
+							<SelectValue placeholder="Select event height" />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="20">20px (compact)</SelectItem>
+							<SelectItem value="24">24px (default)</SelectItem>
+							<SelectItem value="36">36px</SelectItem>
+							<SelectItem value="48">48px (two lines)</SelectItem>
 						</SelectContent>
 					</Select>
 				</div>

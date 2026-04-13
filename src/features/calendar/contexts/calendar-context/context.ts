@@ -51,6 +51,7 @@ export interface CalendarContextType {
 	disableDragAndDrop?: boolean
 	dayMaxEvents: number
 	eventSpacing: number
+	eventHeight: number
 	stickyViewHeader: boolean
 	viewHeaderClassName: string
 	headerComponent?: React.ReactNode // Optional custom header component

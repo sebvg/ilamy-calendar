@@ -11,7 +11,7 @@ import type {
 } from '@/features/calendar/types'
 import { useCalendarEngine } from '@/hooks/use-calendar-engine'
 import type { Dayjs } from '@/lib/configs/dayjs-config'
-import { GAP_BETWEEN_ELEMENTS } from '@/lib/constants'
+import { EVENT_BAR_HEIGHT, GAP_BETWEEN_ELEMENTS } from '@/lib/constants'
 import type { Translations, TranslatorFunction } from '@/lib/translations/types'
 import type { CalendarView, TimeFormat } from '@/types'
 import { CalendarContext } from './context'
@@ -37,6 +37,7 @@ export interface CalendarProviderProps {
 	disableDragAndDrop?: boolean
 	dayMaxEvents: number
 	eventSpacing?: number
+	eventHeight?: number
 	stickyViewHeader?: boolean
 	viewHeaderClassName?: string
 	headerComponent?: ReactNode // Optional custom header component
@@ -77,6 +78,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
 	disableDragAndDrop,
 	dayMaxEvents,
 	eventSpacing = GAP_BETWEEN_ELEMENTS,
+	eventHeight = EVENT_BAR_HEIGHT,
 	stickyViewHeader = true,
 	viewHeaderClassName = '',
 	headerComponent,
@@ -185,6 +187,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
 			disableDragAndDrop,
 			dayMaxEvents,
 			eventSpacing,
+			eventHeight,
 			stickyViewHeader,
 			viewHeaderClassName,
 			headerComponent,
@@ -211,6 +214,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
 			disableDragAndDrop,
 			dayMaxEvents,
 			eventSpacing,
+			eventHeight,
 			stickyViewHeader,
 			viewHeaderClassName,
 			headerComponent,

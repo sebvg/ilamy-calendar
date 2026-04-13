@@ -313,6 +313,7 @@ export function DemoPage() {
 	const [useCustomTimeIndicator, setUseCustomTimeIndicator] = useState(false)
 	const [useCustomHourRenderer, setUseCustomHourRenderer] = useState(false)
 	const [hiddenDays, setHiddenDays] = useState<WeekDays[]>([])
+	const [eventHeight, setEventHeight] = useState(24)
 
 	// Resource calendar settings
 	const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>(
@@ -321,25 +322,40 @@ export function DemoPage() {
 
 	const calendarKey = `${locale}-${initialView}-${initialDate?.toISOString() || 'today'}-${timeFormat}-${useCustomTimeIndicator}`
 
-	// Custom event renderer function
+	// Custom event renderer function — adapts to eventHeight
 	const renderEvent = (event: CalendarEvent) => {
 		const backgroundColor = event.backgroundColor || 'bg-blue-500'
 		const color = event.color || 'text-blue-800'
+		const isCompact = eventHeight <= 24
+		const isLarge = eventHeight >= 36
+
 		return (
 			<div
 				className={cn(
-					'border-primary border-1 border-l-2 px-2 w-full h-full overflow-clip',
+					'border-primary border border-l-2 px-2 w-full h-full overflow-clip',
 					backgroundColor,
 					color
 				)}
 				style={{ backgroundColor, color }}
 			>
-				<p className="text-[10px] font-semibold truncate leading-tight">
+				<p
+					className={cn(
+						'font-semibold truncate leading-tight',
+						isLarge ? 'text-xs' : 'text-[10px]'
+					)}
+				>
 					{event.title}
 				</p>
-				<p className="text-[8px] truncate opacity-80 leading-tight">
-					{event.start.format('h:mm A')} - {event.end.format('h:mm A')}
-				</p>
+				{!isCompact && (
+					<p
+						className={cn(
+							'truncate opacity-80 leading-tight',
+							isLarge ? 'text-[10px]' : 'text-[8px]'
+						)}
+					>
+						{event.start.format('h:mm A')} - {event.end.format('h:mm A')}
+					</p>
+				)}
 			</div>
 		)
 	}
@@ -413,6 +429,7 @@ export function DemoPage() {
 						disableCellClick={disableCellClick}
 						disableDragAndDrop={disableDragAndDrop}
 						disableEventClick={disableEventClick}
+						eventHeight={eventHeight}
 						firstDayOfWeek={firstDayOfWeek}
 						hiddenDays={hiddenDays}
 						hideNonBusinessHours={hideNonBusinessHours}
@@ -429,6 +446,7 @@ export function DemoPage() {
 						setDisableCellClick={setDisableCellClick}
 						setDisableDragAndDrop={setDisableDragAndDrop}
 						setDisableEventClick={setDisableEventClick}
+						setEventHeight={setEventHeight}
 						setFirstDayOfWeek={setFirstDayOfWeek}
 						setHiddenDays={setHiddenDays}
 						setHideNonBusinessHours={setHideNonBusinessHours}
@@ -513,6 +531,7 @@ export function DemoPage() {
 									disableCellClick={disableCellClick}
 									disableDragAndDrop={disableDragAndDrop}
 									disableEventClick={disableEventClick}
+									eventHeight={eventHeight}
 									events={customEvents}
 									firstDayOfWeek={firstDayOfWeek}
 									hiddenDays={hiddenDays}
@@ -557,6 +576,7 @@ export function DemoPage() {
 									disableCellClick={disableCellClick}
 									disableDragAndDrop={disableDragAndDrop} // No year view for resource calendar
 									disableEventClick={disableEventClick}
+									eventHeight={eventHeight}
 									events={resourceEvents}
 									firstDayOfWeek={firstDayOfWeek}
 									hiddenDays={hiddenDays}
