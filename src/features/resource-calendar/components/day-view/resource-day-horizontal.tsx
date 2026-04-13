@@ -1,5 +1,6 @@
 import type React from 'react'
 import { AnimatedSection } from '@/components/animations/animated-section'
+import { HourLabel } from '@/components/hour-label/hour-label'
 import type { BusinessHours } from '@/components/types'
 import { getViewHours } from '@/features/calendar/utils/view-hours'
 import { ResourceEventGrid } from '@/features/resource-calendar/components/resource-event-grid'
@@ -11,15 +12,11 @@ export const ResourceDayHorizontal: React.FC = () => {
 	const {
 		currentDate,
 		t,
-		timeFormat,
 		businessHours,
 		hideNonBusinessHours,
 		getVisibleResources,
 	} = useSmartCalendarContext()
-
 	const resources = getVisibleResources()
-
-	// Generate time columns (hourly slots)
 	const dayHours = getViewHours({
 		referenceDate: currentDate,
 		businessHours,
@@ -62,7 +59,7 @@ export const ResourceDayHorizontal: React.FC = () => {
 								key={`${key}-animated`}
 								transitionKey={`${key}-motion`}
 							>
-								{col.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+								<HourLabel date={col} />
 							</AnimatedSection>
 						)
 					})}

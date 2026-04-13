@@ -31,6 +31,7 @@ export const useProcessedWeekEvents = ({
 		getEventsForDateRange,
 		dayMaxEvents,
 		eventSpacing,
+		eventHeight,
 		getEventsForResource,
 	} = useSmartCalendarContext()
 
@@ -89,9 +90,18 @@ export const useProcessedWeekEvents = ({
 			dayMaxEvents,
 			dayNumberHeight,
 			eventSpacing,
+			eventBarHeight: eventHeight,
 			gridType,
 		})
-	}, [days, dayMaxEvents, dayNumberHeight, eventSpacing, events, gridType])
+	}, [
+		days,
+		dayMaxEvents,
+		dayNumberHeight,
+		eventSpacing,
+		eventHeight,
+		events,
+		gridType,
+	])
 
 	return { positionedEvents, dayEventsMap }
 }

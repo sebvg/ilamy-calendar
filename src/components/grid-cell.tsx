@@ -4,7 +4,6 @@ import type { CalendarEvent } from '@/components/types'
 import { isBusinessHour } from '@/features/calendar/utils/business-hours'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
 import type { Dayjs } from '@/lib/configs/dayjs-config'
-import { EVENT_BAR_HEIGHT } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import type { SelectedDayEvents } from './all-events-dialog'
 import { AllEventDialog } from './all-events-dialog'
@@ -56,6 +55,7 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 		businessHours,
 		currentLocale,
 		eventSpacing,
+		eventHeight,
 		getResourceById,
 	} = useSmartCalendarContext()
 
@@ -173,7 +173,7 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 									className="w-full shrink-0"
 									data-testid={event?.title}
 									key={`empty-${rowIndex}-${event.id}`}
-									style={{ height: `${EVENT_BAR_HEIGHT}px` }}
+									style={{ height: `${eventHeight}px` }}
 								/>
 							))}
 

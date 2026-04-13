@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v1.5.2](https://github.com/kcsujeet/ilamy-calendar/compare/v1.5.1...v1.5.2)
+
+> 12 April 2026
+
+##### Features
+
+- feat: add `eventHeight` prop for configurable event bar height in horizontal grid views (month, resource month, resource week horizontal) ([`#115`](https://github.com/kcsujeet/ilamy-calendar/pull/115)) — Closes [`#114`](https://github.com/kcsujeet/ilamy-calendar/issues/114)
+  - Defaults to 24px for backward compatibility
+  - Enables multi-line event content (e.g., title + booking times on separate lines)
+  - Available on both `IlamyCalendar` and `IlamyResourceCalendar`
+
+#### [v1.5.1](https://github.com/kcsujeet/ilamy-calendar/compare/v1.5.0...v1.5.1)
+
+> 10 April 2026
+
+##### Features
+
+- feat: fire `onDateChange` when view changes — ensures the callback fires on view switches so consumers can re-fetch events for the new visible range ([`#106`](https://github.com/kcsujeet/ilamy-calendar/pull/106))
+- feat: add `renderHour` prop for custom hour formatting in day/week time grids ([`#109`](https://github.com/kcsujeet/ilamy-calendar/pull/109))
+
+##### Fixes
+
+- fix: move side-effect callbacks out of state updaters in `useCalendarEngine` — prevents cascading re-renders caused by calling `onDateChange`/`onViewChange` inside `setState` ([`#110`](https://github.com/kcsujeet/ilamy-calendar/pull/110))
+
+##### Docs
+
+- docs: add API parity checklist vs FullCalendar
+
 #### [v1.5.0](https://github.com/kcsujeet/ilamy-calendar/compare/v1.4.0...v1.5.0)
 
 > 4 April 2026

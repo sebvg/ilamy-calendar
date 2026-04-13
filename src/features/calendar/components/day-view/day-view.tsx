@@ -1,5 +1,6 @@
 import { AllDayRow } from '@/components/all-day-row/all-day-row'
 import { AnimatedSection } from '@/components/animations/animated-section'
+import { HourLabel } from '@/components/hour-label/hour-label'
 import { VerticalGrid } from '@/components/vertical-grid/vertical-grid'
 import { getViewHours } from '@/features/calendar/utils/view-hours'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
@@ -7,7 +8,7 @@ import dayjs, { type Dayjs } from '@/lib/configs/dayjs-config'
 import { cn } from '@/lib/utils'
 
 export const DayView = () => {
-	const { currentDate, timeFormat, t, businessHours, hideNonBusinessHours } =
+	const { currentDate, t, businessHours, hideNonBusinessHours } =
 		useSmartCalendarContext()
 	const isToday = currentDate.isSame(dayjs(), 'day')
 	const hours = getViewHours({
@@ -27,7 +28,7 @@ export const DayView = () => {
 		noEvents: true,
 		renderCell: (date: Dayjs) => (
 			<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-				{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
+				<HourLabel date={date} />
 			</div>
 		),
 	}

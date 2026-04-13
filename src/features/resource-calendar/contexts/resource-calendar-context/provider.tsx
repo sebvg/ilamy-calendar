@@ -9,6 +9,8 @@ import type {
 } from '@/features/calendar/types'
 import type { Resource } from '@/features/resource-calendar/types'
 import { useCalendarEngine } from '@/hooks/use-calendar-engine'
+import type { Dayjs } from '@/lib/configs/dayjs-config'
+import { EVENT_BAR_HEIGHT } from '@/lib/constants'
 import { ResourceCalendarContext } from './context'
 
 const getEventResourceIds = (event: CalendarEvent): (string | number)[] => {
@@ -31,6 +33,7 @@ interface ResourceCalendarProviderProps extends CalendarProviderProps {
 	renderCurrentTimeIndicator?: (
 		props: RenderCurrentTimeIndicatorProps
 	) => React.ReactNode
+	renderHour?: (date: Dayjs) => React.ReactNode
 	hideNonBusinessHours?: boolean
 }
 
@@ -58,6 +61,7 @@ export const ResourceCalendarProvider: React.FC<
 	disableDragAndDrop,
 	dayMaxEvents,
 	eventSpacing = 1,
+	eventHeight = EVENT_BAR_HEIGHT,
 	stickyViewHeader = true,
 	viewHeaderClassName = '',
 	headerComponent,
@@ -71,6 +75,7 @@ export const ResourceCalendarProvider: React.FC<
 	classesOverride,
 	orientation = 'horizontal',
 	renderCurrentTimeIndicator,
+	renderHour,
 	hideNonBusinessHours = false,
 	hiddenDays,
 	weekViewGranularity = 'hourly',
@@ -275,6 +280,7 @@ export const ResourceCalendarProvider: React.FC<
 			disableDragAndDrop,
 			dayMaxEvents,
 			eventSpacing,
+			eventHeight,
 			stickyViewHeader,
 			viewHeaderClassName,
 			businessHours,
@@ -282,6 +288,7 @@ export const ResourceCalendarProvider: React.FC<
 			classesOverride,
 			orientation,
 			renderCurrentTimeIndicator,
+			renderHour,
 			hideNonBusinessHours,
 			hiddenDays,
 			weekViewGranularity,
@@ -312,6 +319,7 @@ export const ResourceCalendarProvider: React.FC<
 			disableDragAndDrop,
 			dayMaxEvents,
 			eventSpacing,
+			eventHeight,
 			stickyViewHeader,
 			viewHeaderClassName,
 			headerComponent,
@@ -321,6 +329,7 @@ export const ResourceCalendarProvider: React.FC<
 			classesOverride,
 			orientation,
 			renderCurrentTimeIndicator,
+			renderHour,
 			hideNonBusinessHours,
 			hiddenDays,
 			weekViewGranularity,

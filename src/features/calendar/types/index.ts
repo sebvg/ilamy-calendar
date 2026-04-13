@@ -185,6 +185,13 @@ export interface IlamyCalendarProps {
 	 */
 	eventSpacing?: number
 	/**
+	 * Height of event bars in horizontal grid views (month view, resource month, resource week horizontal) in pixels.
+	 * Increase this to show more content per event (e.g., title + time on separate lines).
+	 * Does not affect day/week views, which use percentage-based heights that scale with event duration.
+	 * Defaults to 24 pixels if not specified.
+	 */
+	eventHeight?: number
+	/**
 	 * Whether to stick the view header to the top of the calendar.
 	 * Useful for keeping the header visible while scrolling.
 	 */
@@ -272,4 +279,9 @@ export interface IlamyCalendarProps {
 	 * @example ['saturday', 'sunday'] // Hide weekends
 	 */
 	hiddenDays?: WeekDays[]
+	/**
+	 * Custom render function for the hour labels in the gutter/header.
+	 * Receives a Dayjs object for the hour and should return a React node.
+	 */
+	renderHour?: (date: Dayjs) => React.ReactNode
 }

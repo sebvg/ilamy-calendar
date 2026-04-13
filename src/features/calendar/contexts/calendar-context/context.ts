@@ -51,6 +51,7 @@ export interface CalendarContextType {
 	disableDragAndDrop?: boolean
 	dayMaxEvents: number
 	eventSpacing: number
+	eventHeight: number
 	stickyViewHeader: boolean
 	viewHeaderClassName: string
 	headerComponent?: React.ReactNode // Optional custom header component
@@ -64,6 +65,7 @@ export interface CalendarContextType {
 	renderCurrentTimeIndicator?: (
 		props: RenderCurrentTimeIndicatorProps
 	) => React.ReactNode
+	renderHour?: (date: Dayjs) => React.ReactNode
 	hideNonBusinessHours?: boolean
 	hiddenDays?: Set<number>
 }

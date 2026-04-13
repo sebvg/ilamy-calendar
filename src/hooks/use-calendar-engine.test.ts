@@ -935,5 +935,31 @@ describe('useCalendarEngine', () => {
 			expect(range.start.format('YYYY-MM-DD')).toBe('2025-12-21')
 			expect(range.end.format('YYYY-MM-DD')).toBe('2025-12-27')
 		})
+
+		it('should fire onDateChange when view changes (month → week)', () => {
+			const { result } = renderHook(() =>
+				useCalendarEngine({
+					...defaultConfig,
+					initialDate, // Jan 15, 2025 (Wednesday)
+					initialView: 'month',
+					firstDayOfWeek: 0,
+					onDateChange,
+				})
+			)
+
+			// Switch from month to week — visible range changes from 42 days to 7 days
+			act(() => result.current.setView('week'))
+
+			expect(onDateChange).toHaveBeenCalledTimes(1)
+			const [date, range] = onDateChange.mock.calls[0]
+
+			// Date should be the same (Jan 15)
+			expect(date.format('YYYY-MM-DD')).toBe('2025-01-15')
+
+			// Range should be the week containing Jan 15 (Sunday start)
+			// Jan 12 (Sun) to Jan 18 (Sat)
+			expect(range.start.format('YYYY-MM-DD')).toBe('2025-01-12')
+			expect(range.end.format('YYYY-MM-DD')).toBe('2025-01-18')
+		})
 	})
 })

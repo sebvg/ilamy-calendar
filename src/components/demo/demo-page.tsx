@@ -311,7 +311,9 @@ export function DemoPage() {
 	const [timeFormat, setTimeFormat] = useState<TimeFormat>('12-hour')
 	const [useCustomClasses, setUseCustomClasses] = useState(false)
 	const [useCustomTimeIndicator, setUseCustomTimeIndicator] = useState(false)
+	const [useCustomHourRenderer, setUseCustomHourRenderer] = useState(false)
 	const [hiddenDays, setHiddenDays] = useState<WeekDays[]>([])
+	const [eventHeight, setEventHeight] = useState(24)
 
 	// Resource calendar settings
 	const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>(
@@ -324,24 +326,43 @@ export function DemoPage() {
 
 	const calendarKey = `${locale}-${initialView}-${initialDate?.toISOString() || 'today'}-${timeFormat}-${useCustomTimeIndicator}`
 
-	// Custom event renderer function
+	// Custom event renderer function — adapts to eventHeight
 	const renderEvent = (event: CalendarEvent) => {
 		const backgroundColor = event.backgroundColor || 'bg-blue-500'
 		const color = event.color || 'text-blue-800'
+		const isCompact = eventHeight <= 24
+		const isLarge = eventHeight >= 36
+
 		return (
 			<div
 				className={cn(
-					'border-primary border-1 border-l-2 px-2 truncate w-full h-full',
+					'border-primary border border-l-2 px-2 w-full h-full overflow-clip',
 					backgroundColor,
 					color
 				)}
 				style={{ backgroundColor, color }}
 			>
-				{event.title}
+				<p
+					className={cn(
+						'font-semibold truncate leading-tight',
+						isLarge ? 'text-xs' : 'text-[10px]'
+					)}
+				>
+					{event.title}
+				</p>
+				{!isCompact && (
+					<p
+						className={cn(
+							'truncate opacity-80 leading-tight',
+							isLarge ? 'text-[10px]' : 'text-[8px]'
+						)}
+					>
+						{event.start.format('h:mm A')} - {event.end.format('h:mm A')}
+					</p>
+				)}
 			</div>
 		)
 	}
-
 	// Custom current time indicator renderer
 	const renderCurrentTimeIndicator = ({
 		currentTime,
@@ -366,6 +387,18 @@ export function DemoPage() {
 				)}
 				{/* Red line extends across all columns */}
 				<div className="flex-1 bg-red-500" />
+			</div>
+		)
+	}
+
+	// Custom hour renderer function
+	const renderHour = (date: Dayjs) => {
+		return (
+			<div className="flex flex-col items-center leading-tight">
+				<span className="font-bold text-sm">{date.format('h')}</span>
+				<span className="text-[10px] opacity-60 uppercase font-medium">
+					{date.format('A')}
+				</span>
 			</div>
 		)
 	}
@@ -400,6 +433,7 @@ export function DemoPage() {
 						disableCellClick={disableCellClick}
 						disableDragAndDrop={disableDragAndDrop}
 						disableEventClick={disableEventClick}
+						eventHeight={eventHeight}
 						firstDayOfWeek={firstDayOfWeek}
 						hiddenDays={hiddenDays}
 						hideNonBusinessHours={hideNonBusinessHours}
@@ -416,6 +450,7 @@ export function DemoPage() {
 						setDisableCellClick={setDisableCellClick}
 						setDisableDragAndDrop={setDisableDragAndDrop}
 						setDisableEventClick={setDisableEventClick}
+						setEventHeight={setEventHeight}
 						setFirstDayOfWeek={setFirstDayOfWeek}
 						setHiddenDays={setHiddenDays}
 						setHideNonBusinessHours={setHideNonBusinessHours}
@@ -428,6 +463,7 @@ export function DemoPage() {
 						setTimezone={setTimezone}
 						setUseCustomClasses={setUseCustomClasses}
 						setUseCustomEventRenderer={setUseCustomEventRenderer}
+						setUseCustomHourRenderer={setUseCustomHourRenderer}
 						setUseCustomOnDateClick={setUseCustomOnDateClick}
 						setUseCustomOnEventClick={setUseCustomOnEventClick}
 						setUseCustomTimeIndicator={setUseCustomTimeIndicator}
@@ -438,6 +474,7 @@ export function DemoPage() {
 						useCustomClasses={useCustomClasses}
 						// Resource calendar specific props
 						useCustomEventRenderer={useCustomEventRenderer}
+						useCustomHourRenderer={useCustomHourRenderer}
 						useCustomOnDateClick={useCustomOnDateClick}
 						useCustomOnEventClick={useCustomOnEventClick}
 						useCustomTimeIndicator={useCustomTimeIndicator}
@@ -500,6 +537,7 @@ export function DemoPage() {
 									disableCellClick={disableCellClick}
 									disableDragAndDrop={disableDragAndDrop}
 									disableEventClick={disableEventClick}
+									eventHeight={eventHeight}
 									events={customEvents}
 									firstDayOfWeek={firstDayOfWeek}
 									hiddenDays={hiddenDays}
@@ -524,6 +562,7 @@ export function DemoPage() {
 											: undefined
 									}
 									renderEvent={useCustomEventRenderer ? renderEvent : undefined}
+									renderHour={useCustomHourRenderer ? renderHour : undefined}
 									stickyViewHeader={stickyViewHeader}
 									timeFormat={timeFormat}
 									timezone={timezone}
@@ -543,6 +582,7 @@ export function DemoPage() {
 									disableCellClick={disableCellClick}
 									disableDragAndDrop={disableDragAndDrop} // No year view for resource calendar
 									disableEventClick={disableEventClick}
+									eventHeight={eventHeight}
 									events={resourceEvents}
 									firstDayOfWeek={firstDayOfWeek}
 									hiddenDays={hiddenDays}
@@ -568,6 +608,7 @@ export function DemoPage() {
 											: undefined
 									}
 									renderEvent={useCustomEventRenderer ? renderEvent : undefined}
+									renderHour={useCustomHourRenderer ? renderHour : undefined}
 									resources={demoResources}
 									stickyViewHeader={stickyViewHeader}
 									timeFormat={timeFormat}
