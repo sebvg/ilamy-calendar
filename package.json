@@ -61,7 +61,7 @@
 		"type-check": "bunx tsc --noEmit",
 		"ci": "bun run check && bun run type-check && bun run test && bun run build",
 		"pre-commit": "bun run check:fix",
-		"prepare": "bunx husky",
+		"setup:hooks": "bunx husky",
 		"prepack": "bun scripts/prepack.ts",
 		"postpack": "bun scripts/postpack.ts",
 		"release": "bun run ci && npm publish --access public",
