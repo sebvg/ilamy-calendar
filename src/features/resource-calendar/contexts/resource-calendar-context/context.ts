@@ -24,7 +24,7 @@ export interface ResourceCalendarContextType extends CalendarContextType {
 	onCellClick: (info: CellClickInfo) => void
 	renderResource?: (resource: Resource) => React.ReactNode
 	orientation: 'horizontal' | 'vertical'
-	showHoursOnWeekView: boolean
+	weekViewGranularity: 'hourly' | 'daily'
 }
 
 // ResourceCalendarContext is kept for internal Provider usage

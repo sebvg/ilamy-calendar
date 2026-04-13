@@ -68,14 +68,18 @@ const NoMemoVerticalGridCol: React.FC<VerticalGridColProps> = ({
 								: `vertical-cell-${dateStr}-${hourStr}-00${resourceId ? `-${resourceId}` : ''}`
 						return (
 							<div
-								className={`h-[${cellHeight}px] border-b border-r`}
+								className="border-b border-r"
 								data-testid={testId}
 								key={`${id}-${dayIndex}-${hourStr}`}
+								style={{ height: `${cellHeight}px` }}
 							>
 								{renderCell(day)}
 							</div>
 						)
 					}
+
+					const slotHeight =
+						cellSlots.length === 1 ? cellHeight : cellHeight / cellSlots.length
 
 					return cellSlots.map((minute) => {
 						const m = minute === 60 ? undefined : minute
@@ -85,8 +89,8 @@ const NoMemoVerticalGridCol: React.FC<VerticalGridColProps> = ({
 						return (
 							<GridCell
 								className={cn(
-									`hover:bg-accent relative z-10 h-[${cellHeight}px] cursor-pointer border-b`,
-									minute === 60 ? '' : 'border-dashed h-[15px] min-h-[15px]',
+									'hover:bg-accent relative z-10 cursor-pointer border-b',
+									minute === 60 ? '' : 'border-dashed',
 									isLastColumn ? 'border-r-0' : 'border-r'
 								)}
 								data-testid={testId}
@@ -97,6 +101,7 @@ const NoMemoVerticalGridCol: React.FC<VerticalGridColProps> = ({
 								minute={m}
 								resourceId={resourceId} // Events are rendered in a separate layer
 								shouldRenderEvents={false}
+								style={{ height: `${slotHeight}px` }}
 							/>
 						)
 					})

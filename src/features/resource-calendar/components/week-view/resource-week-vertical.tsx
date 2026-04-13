@@ -22,7 +22,7 @@ export const ResourceWeekVertical: React.FC = () => {
 		businessHours,
 		hideNonBusinessHours,
 		hiddenDays,
-		showHoursOnWeekView,
+		weekViewGranularity,
 	} = useSmartCalendarContext()
 
 	const resources = getVisibleResources()
@@ -55,44 +55,35 @@ export const ResourceWeekVertical: React.FC = () => {
 	)
 
 	const firstCol = useMemo(
-		() =>
-			showHoursOnWeekView
-				? {
-						id: 'time-col',
-						days: hours,
-						day: undefined,
-						className:
-							'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
-						gridType: 'hour' as const,
-						noEvents: true,
-						renderCell: (date: Dayjs) => (
-							<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-								{date.format(timeFormat === '12-hour' ? 'h A' : 'H')}
-							</div>
-						),
-					}
-				: {
-						id: 'date-col',
-						days: weekDays,
-						day: undefined,
-						className:
-							'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
-						gridType: 'day' as const,
-						noEvents: true,
-						renderCell: (date: Dayjs) => (
-							<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
-								<span>{date.format('D')}</span>
-								<span>{date.format('ddd')}</span>
-							</div>
-						),
-						cellHeight: 72,
-					},
-		[hours, timeFormat, showHoursOnWeekView, weekDays]
+		() => ({
+			id: weekViewGranularity === 'hourly' ? 'time-col' : 'date-col',
+			days: weekViewGranularity === 'hourly' ? hours : weekDays,
+			day: undefined,
+			className:
+				'shrink-0 w-16 min-w-16 max-w-16 sticky left-0 bg-background z-20',
+			gridType:
+				weekViewGranularity === 'hourly' ? ('hour' as const) : ('day' as const),
+			noEvents: true,
+			renderCell: (date: Dayjs) => (
+				<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
+					{weekViewGranularity === 'hourly' ? (
+						date.format(timeFormat === '12-hour' ? 'h A' : 'H')
+					) : (
+						<div className="text-muted-foreground p-2 text-right text-[10px] sm:text-xs flex flex-col items-center">
+							<span>{date.format('ddd')}</span>
+							<span>{date.format('M/D')}</span>
+						</div>
+					)}
+				</div>
+			),
+			cellHeight: weekViewGranularity === 'hourly' ? 60 : 72,
+		}),
+		[hours, timeFormat, weekViewGranularity, weekDays]
 	)
 
 	const columns = useMemo(
 		() =>
-			showHoursOnWeekView
+			weekViewGranularity === 'hourly'
 				? resources.flatMap((resource) =>
 						visibleDays.map((day) => ({
 							id: `day-col-${day.format('YYYY-MM-DD')}-resource-${resource.id}`,
@@ -109,6 +100,7 @@ export const ResourceWeekVertical: React.FC = () => {
 									.filter(Boolean) as (BusinessHours | BusinessHours[])[],
 							}),
 							gridType: 'hour' as const,
+							cellHeight: 60,
 						}))
 					)
 				: resources.map((resource) => ({
@@ -124,65 +116,51 @@ export const ResourceWeekVertical: React.FC = () => {
 			weekDays,
 			businessHours,
 			hideNonBusinessHours,
-			visibleDays.map,
-			showHoursOnWeekView,
+			visibleDays,
+			weekViewGranularity,
 		]
 	)
-
-	if (!showHoursOnWeekView) {
-		return (
-			<VerticalGrid
-				classes={{ header: 'w-full', body: 'w-full' }}
-				columns={[firstCol, ...columns]}
-				data-testid="resource-week-vertical-grid"
-			>
-				{/* Header */}
-				<div
-					className={'flex border-b h-12 flex-1'}
-					data-testid="resource-week-header"
-				>
-					<div className="shrink-0 border-r w-16 sticky top-0 left-0 bg-background z-20" />
-					{resources.map((resource) => (
-						<ResourceCell
-							className="min-w-50 flex-1"
-							key={`resource-cell-${resource.id}`}
-							resource={resource}
-						/>
-					))}
-				</div>
-			</VerticalGrid>
-		)
-	}
 
 	return (
 		<VerticalGrid
 			allDayRow={
-				<div className="flex">
-					<AllDayCell />
-					{resources.map((resource) => (
-						<AllDayRow
-							classes={{ cell: 'min-w-50' }}
-							days={visibleDays}
-							key={`resource-week-allday-row-${resource.id}`}
-							resource={resource}
-							showSpacer={false}
-						/>
-					))}
-				</div>
+				weekViewGranularity === 'hourly' ? (
+					<div className="flex">
+						<AllDayCell />
+						{resources.map((resource) => (
+							<AllDayRow
+								classes={{ cell: 'min-w-50' }}
+								days={visibleDays}
+								key={`resource-week-allday-row-${resource.id}`}
+								resource={resource}
+								showSpacer={false}
+							/>
+						))}
+					</div>
+				) : undefined
 			}
-			classes={{ header: 'h-24' }}
+			classes={{ header: weekViewGranularity === 'hourly' ? 'h-24' : 'h-12' }}
 			columns={[firstCol, ...columns]}
 			data-testid="resource-week"
-			gridType="hour"
+			gridType={weekViewGranularity === 'hourly' ? 'hour' : 'day'}
 		>
 			<div className="flex-1 flex flex-col">
 				{/* Resource header row */}
 				<div className="flex h-12">
 					<div className="shrink-0 w-16 border-r z-20 bg-background sticky left-0">
-						<span className="px-2 h-full w-full flex justify-center items-end text-xs text-muted-foreground">
-							{t('week')}
+						<span
+							className={cn(
+								'px-2 h-full w-full flex justify-center text-xs text-muted-foreground',
+								weekViewGranularity === 'hourly'
+									? 'items-end'
+									: 'items-center border-b'
+							)}
+						>
+							{t('week')}{' '}
+							{weekViewGranularity === 'daily' ? currentDate.week() : ''}
 						</span>
 					</div>
+
 					{resources.map((resource, index) => {
 						const key = `resource-week-header-${resource.id}-day`
 
@@ -194,7 +172,10 @@ export const ResourceWeekVertical: React.FC = () => {
 								delay={index * 0.05}
 								key={`${key}-animated`}
 								style={{
-									width: `calc(${visibleDays.length} * var(--spacing) * 50)`,
+									width:
+										weekViewGranularity === 'hourly'
+											? `calc(${visibleDays.length} * var(--spacing) * 50)`
+											: 'calc(var(--spacing) * 50)',
 								}}
 								transitionKey={`${key}-motion`}
 							>
@@ -202,7 +183,12 @@ export const ResourceWeekVertical: React.FC = () => {
 									className="h-full w-full flex-1"
 									resource={resource}
 								>
-									<div className="sticky left-1/2 text-sm font-medium truncate">
+									<div
+										className={cn(
+											'sticky text-sm font-medium truncate',
+											weekViewGranularity === 'hourly' ? 'left-1/2' : 'left-1'
+										)}
+									>
 										{resource.title}
 									</div>
 								</ResourceCell>
@@ -212,34 +198,37 @@ export const ResourceWeekVertical: React.FC = () => {
 				</div>
 
 				{/* Date header row */}
-				<div className="flex h-12">
-					<div className="shrink-0 w-16 border-r border-b z-20 bg-background sticky left-0">
-						<span className="px-2 h-full w-full flex justify-center items-start font-medium">
-							{currentDate.week()}
-						</span>
-					</div>
-					{columns.map((col, index) => {
-						const day = col.day as Dayjs
-						const key = `resource-week-header-${day.toISOString()}-hour-${col.resourceId}`
+				{weekViewGranularity === 'hourly' && (
+					<div className="flex h-12">
+						<div className="shrink-0 w-16 border-r border-b z-20 bg-background sticky left-0">
+							<span className="px-2 h-full w-full flex justify-center items-start font-medium">
+								{currentDate.week()}
+							</span>
+						</div>
+						{columns.map((col, index) => {
+							const day = col.day
+							if (!day) return null
+							const key = `resource-week-header-${day.toISOString()}-hour-${col.resourceId}`
 
-						return (
-							<AnimatedSection
-								className={cn(
-									'w-50 border-r last:border-r-0 border-b flex flex-col items-center justify-center text-xs shrink-0 bg-background'
-								)}
-								data-testid={`resource-week-time-label-${day.format('HH')}`}
-								delay={index * 0.05}
-								key={`${key}-animated`}
-								transitionKey={`${key}-motion`}
-							>
-								<div className="text-sm">{day.format('ddd')}</div>
-								<div className="text-xs text-muted-foreground">
-									{day.format('M/D')}
-								</div>
-							</AnimatedSection>
-						)
-					})}
-				</div>
+							return (
+								<AnimatedSection
+									className={cn(
+										'w-50 border-r last:border-r-0 border-b flex flex-col items-center justify-center text-xs shrink-0 bg-background'
+									)}
+									data-testid={`resource-week-time-label-${day.format('HH')}`}
+									delay={index * 0.05}
+									key={`${key}-animated`}
+									transitionKey={`${key}-motion`}
+								>
+									<div className="text-sm">{day.format('ddd')}</div>
+									<div className="text-xs text-muted-foreground">
+										{day.format('M/D')}
+									</div>
+								</AnimatedSection>
+							)
+						})}
+					</div>
+				)}
 			</div>
 		</VerticalGrid>
 	)

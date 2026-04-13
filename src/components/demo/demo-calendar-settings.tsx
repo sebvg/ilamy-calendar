@@ -71,9 +71,9 @@ interface DemoCalendarSettingsProps {
 	// Resource calendar specific props
 	isResourceCalendar?: boolean
 	orientation?: 'horizontal' | 'vertical'
-	showHoursOnWeekView?: boolean
+	weekViewGranularity?: 'hourly' | 'daily'
 	setOrientation?: (value: 'horizontal' | 'vertical') => void
-	setShowHoursOnWeekView?: (value: boolean) => void
+	setWeekViewGranularity?: (value: 'hourly' | 'daily') => void
 	// Business hours settings
 	hideNonBusinessHours: boolean
 	setHideNonBusinessHours: (value: boolean) => void
@@ -127,8 +127,8 @@ export function DemoCalendarSettings({
 	isResourceCalendar,
 	orientation,
 	setOrientation,
-	showHoursOnWeekView,
-	setShowHoursOnWeekView,
+	weekViewGranularity,
+	setWeekViewGranularity,
 	hideNonBusinessHours,
 	setHideNonBusinessHours,
 	businessStartTime,
@@ -216,20 +216,34 @@ export function DemoCalendarSettings({
 					</div>
 				)}
 				{isResourceCalendar && (
-					<div className="flex items-center space-x-2">
-						<Checkbox
-							checked={showHoursOnWeekView}
-							id="showHoursOnWeekView"
-							onCheckedChange={() =>
-								setShowHoursOnWeekView?.(!showHoursOnWeekView)
-							}
-						/>
-						<label
-							className="text-sm font-medium leading-none cursor-pointer ml-2"
-							htmlFor="showHoursOnWeekView"
-						>
-							Show Hours on Week View
+					<div>
+						<label className="block text-sm text-left font-medium mb-1">
+							Week View Granularity
 						</label>
+						<div className="flex gap-1">
+							<Button
+								className={
+									weekViewGranularity === 'hourly'
+										? 'bg-primary/80 text-primary-foreground'
+										: ''
+								}
+								onClick={() => setWeekViewGranularity?.('hourly')}
+								variant="secondary"
+							>
+								Hourly
+							</Button>
+							<Button
+								className={
+									weekViewGranularity === 'daily'
+										? 'bg-primary/80 text-primary-foreground'
+										: ''
+								}
+								onClick={() => setWeekViewGranularity?.('daily')}
+								variant="secondary"
+							>
+								Daily
+							</Button>
+						</div>
 					</div>
 				)}
 				<div>

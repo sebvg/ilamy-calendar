@@ -103,4 +103,124 @@ describe('VerticalGridCol', () => {
 			screen.queryByTestId('vertical-events-test-col')
 		).not.toBeInTheDocument()
 	})
+
+	describe('cellHeight prop', () => {
+		test('defaults to 60px cell height when using renderCell', () => {
+			renderVerticalGridCol({
+				id: 'time-col',
+				renderCell: (date: Dayjs) => <span>{date.format('HH:mm')}</span>,
+			})
+
+			const cellAt9 = screen.getByTestId('vertical-time-09')
+			expect(cellAt9.style.height).toBe('60px')
+		})
+
+		test('applies custom cellHeight of 72px (daily mode) when using renderCell', () => {
+			renderVerticalGridCol({
+				id: 'time-col',
+				cellHeight: 72,
+				renderCell: (date: Dayjs) => <span>{date.format('HH:mm')}</span>,
+			})
+
+			const cellAt9 = screen.getByTestId('vertical-time-09')
+			expect(cellAt9.style.height).toBe('72px')
+		})
+
+		test('applies cellHeight to all rendered cells when using renderCell', () => {
+			renderVerticalGridCol({
+				id: 'time-col',
+				cellHeight: 72,
+				renderCell: (date: Dayjs) => <span>{date.format('HH:mm')}</span>,
+			})
+
+			const cellAt9 = screen.getByTestId('vertical-time-09')
+			const cellAt10 = screen.getByTestId('vertical-time-10')
+
+			expect(cellAt9.style.height).toBe('72px')
+			expect(cellAt10.style.height).toBe('72px')
+		})
+
+		test('applies cellHeight via inline style to GridCell path cells', () => {
+			const dateStr = initialDate.format('YYYY-MM-DD')
+			renderVerticalGridCol({ cellHeight: 72 })
+
+			const cell = screen.getByTestId(`vertical-cell-${dateStr}-09-00`)
+			expect(cell.style.height).toBe('72px')
+		})
+
+		test('default cellHeight is 60px for GridCell path cells', () => {
+			const dateStr = initialDate.format('YYYY-MM-DD')
+			renderVerticalGridCol()
+
+			const cell = screen.getByTestId(`vertical-cell-${dateStr}-09-00`)
+			expect(cell.style.height).toBe('60px')
+		})
+	})
+
+	describe('gridType day mode', () => {
+		test('renders cells for day-level dates with correct test IDs', () => {
+			const dayDates = [
+				initialDate.startOf('day'),
+				initialDate.add(1, 'day').startOf('day'),
+			]
+
+			renderVerticalGridCol({
+				id: 'day-test-col',
+				days: dayDates,
+				gridType: 'day',
+			})
+
+			const date0Str = dayDates.at(0)?.format('YYYY-MM-DD')
+			const date1Str = dayDates.at(1)?.format('YYYY-MM-DD')
+
+			expect(
+				screen.getByTestId(`vertical-cell-${date0Str}-00-00`)
+			).toBeInTheDocument()
+			expect(
+				screen.getByTestId(`vertical-cell-${date1Str}-00-00`)
+			).toBeInTheDocument()
+		})
+
+		test('renders time-col cells for day-level dates with correct test IDs when renderCell is provided', () => {
+			const dayDates = [
+				initialDate.startOf('day'),
+				initialDate.add(1, 'day').startOf('day'),
+			]
+
+			renderVerticalGridCol({
+				id: 'time-col',
+				days: dayDates,
+				gridType: 'day',
+				renderCell: (date: Dayjs) => <span>{date.format('ddd')}</span>,
+			})
+
+			// time-col path uses hourStr for testId suffix
+			const cells = screen.getAllByTestId('vertical-time-00')
+			expect(cells).toHaveLength(2)
+		})
+
+		test('renders exactly the correct number of cells for day-level dates', () => {
+			const dayDates = [
+				initialDate.startOf('day'),
+				initialDate.add(1, 'day').startOf('day'),
+				initialDate.add(2, 'day').startOf('day'),
+			]
+
+			renderVerticalGridCol({
+				id: 'day-test-col',
+				days: dayDates,
+				gridType: 'day',
+			})
+
+			const dateStrs = dayDates.map((d) => d.format('YYYY-MM-DD'))
+			const cells = dateStrs.map((dateStr) =>
+				screen.getByTestId(`vertical-cell-${dateStr}-00-00`)
+			)
+
+			expect(cells).toHaveLength(3)
+			for (const cell of cells) {
+				expect(cell).toBeInTheDocument()
+			}
+		})
+	})
 })
