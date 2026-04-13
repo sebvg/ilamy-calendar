@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v1.5.2](https://github.com/kcsujeet/ilamy-calendar/compare/v1.5.1...v1.5.2)
+
+> 12 April 2026
+
+##### Features
+
+- feat: add `eventHeight` prop for configurable event bar height in horizontal grid views (month, resource month, resource week horizontal) ([`#115`](https://github.com/kcsujeet/ilamy-calendar/pull/115)) — Closes [`#114`](https://github.com/kcsujeet/ilamy-calendar/issues/114)
+  - Defaults to 24px for backward compatibility
+  - Enables multi-line event content (e.g., title + booking times on separate lines)
+  - Available on both `IlamyCalendar` and `IlamyResourceCalendar`
+
 #### [v1.5.1](https://github.com/kcsujeet/ilamy-calendar/compare/v1.5.0...v1.5.1)
 
 > 10 April 2026
