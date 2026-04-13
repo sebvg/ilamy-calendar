@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { DraggableEvent } from '@/components/draggable-event/draggable-event'
+import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
 import type { Dayjs } from '@/lib/configs/dayjs-config'
-import { EVENT_BAR_HEIGHT } from '@/lib/constants'
 import type { PositionedEvent } from '@/lib/utils/position-week-events'
 
 export interface HorizontalGridEventsLayerProps {
@@ -14,6 +14,7 @@ export interface HorizontalGridEventsLayerProps {
 const NoMemoHorizontalGridEventsLayer: React.FC<
 	HorizontalGridEventsLayerProps
 > = ({ days, resourceId, 'data-testid': dataTestId, positionedEvents }) => {
+	const { eventHeight } = useSmartCalendarContext()
 	const weekStart = days.at(0)?.startOf('day')
 
 	return (
@@ -36,7 +37,7 @@ const NoMemoHorizontalGridEventsLayer: React.FC<
 							left: `calc(${event.left}% + var(--spacing) * 0.25)`,
 							width: `calc(${event.width}% - var(--spacing) * 1)`,
 							top: `${event.top}px`,
-							height: `${EVENT_BAR_HEIGHT}px`,
+							height: `${eventHeight}px`,
 						}}
 					>
 						<DraggableEvent

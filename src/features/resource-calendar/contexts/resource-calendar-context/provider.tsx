@@ -10,6 +10,7 @@ import type {
 import type { Resource } from '@/features/resource-calendar/types'
 import { useCalendarEngine } from '@/hooks/use-calendar-engine'
 import type { Dayjs } from '@/lib/configs/dayjs-config'
+import { EVENT_BAR_HEIGHT } from '@/lib/constants'
 import { ResourceCalendarContext } from './context'
 
 const getEventResourceIds = (event: CalendarEvent): (string | number)[] => {
@@ -59,6 +60,7 @@ export const ResourceCalendarProvider: React.FC<
 	disableDragAndDrop,
 	dayMaxEvents,
 	eventSpacing = 1,
+	eventHeight = EVENT_BAR_HEIGHT,
 	stickyViewHeader = true,
 	viewHeaderClassName = '',
 	headerComponent,
@@ -276,6 +278,7 @@ export const ResourceCalendarProvider: React.FC<
 			disableDragAndDrop,
 			dayMaxEvents,
 			eventSpacing,
+			eventHeight,
 			stickyViewHeader,
 			viewHeaderClassName,
 			businessHours,
@@ -313,6 +316,7 @@ export const ResourceCalendarProvider: React.FC<
 			disableDragAndDrop,
 			dayMaxEvents,
 			eventSpacing,
+			eventHeight,
 			stickyViewHeader,
 			viewHeaderClassName,
 			headerComponent,

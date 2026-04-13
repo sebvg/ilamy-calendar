@@ -27,7 +27,7 @@ export const AllEventDialog: React.FC<AllEventDialogProps> = ({ ref }) => {
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [selectedDayEvents, setSelectedDayEvents] =
 		useState<SelectedDayEvents | null>(null)
-	const { currentDate, firstDayOfWeek } = useSmartCalendarContext()
+	const { currentDate, firstDayOfWeek, eventHeight } = useSmartCalendarContext()
 
 	useImperativeHandle(ref, () => ({
 		open: () => setDialogOpen(true),
@@ -58,10 +58,11 @@ export const AllEventDialog: React.FC<AllEventDialogProps> = ({ ref }) => {
 					{selectedDayEvents?.events.map((event) => {
 						return (
 							<DraggableEvent
-								className="relative my-1 h-[30px]" // Use event ID for unique identification
+								className="relative my-1" // Use event ID for unique identification
 								elementId={`all-events-dialog-event-$${event.id}`}
 								event={event}
 								key={event.id}
+								style={{ height: `${eventHeight}px` }}
 							/>
 						)
 					})}

@@ -23,6 +23,7 @@ interface GetPositionedEventsProps {
 	dayNumberHeight?: number
 	gridType?: 'day' | 'hour' // Future use for different grid types
 	eventSpacing?: number // Custom vertical spacing between events (defaults to GAP_BETWEEN_ELEMENTS)
+	eventBarHeight?: number // Custom height for event bars in pixels (defaults to EVENT_BAR_HEIGHT)
 }
 
 export const getPositionedEvents = ({
@@ -32,6 +33,7 @@ export const getPositionedEvents = ({
 	dayNumberHeight = DAY_NUMBER_HEIGHT,
 	gridType = 'day',
 	eventSpacing = GAP_BETWEEN_ELEMENTS,
+	eventBarHeight = EVENT_BAR_HEIGHT,
 }: GetPositionedEventsProps) => {
 	// For hour-based grids, use actual first/last hours from days array
 	// For day-based grids, use start/end of day to capture all events
@@ -121,8 +123,8 @@ export const getPositionedEvents = ({
 				top:
 					dayNumberHeight +
 					eventSpacing +
-					assignedRow * (EVENT_BAR_HEIGHT + eventSpacing),
-				height: EVENT_BAR_HEIGHT,
+					assignedRow * (eventBarHeight + eventSpacing),
+				height: eventBarHeight,
 				position: assignedRow,
 				...event,
 				isTruncatedStart,
@@ -168,8 +170,8 @@ export const getPositionedEvents = ({
 						top:
 							dayNumberHeight +
 							eventSpacing +
-							truncatedAssignedRow * (EVENT_BAR_HEIGHT + eventSpacing),
-						height: EVENT_BAR_HEIGHT,
+							truncatedAssignedRow * (eventBarHeight + eventSpacing),
+						height: eventBarHeight,
 						position: truncatedAssignedRow,
 						...event,
 						isTruncatedStart: true, // Always truncated at start when using this fallback logic
@@ -215,8 +217,8 @@ export const getPositionedEvents = ({
 				top:
 					dayNumberHeight +
 					eventSpacing +
-					assignedRow * (EVENT_BAR_HEIGHT + eventSpacing),
-				height: EVENT_BAR_HEIGHT,
+					assignedRow * (eventBarHeight + eventSpacing),
+				height: eventBarHeight,
 				position: assignedRow,
 				...event,
 				isTruncatedStart,
