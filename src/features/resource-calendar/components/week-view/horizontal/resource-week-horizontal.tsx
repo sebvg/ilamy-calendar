@@ -5,10 +5,12 @@ import { cn } from '@/lib/utils'
 import { useResourceWeekViewData } from '../use-resource-week-view-data'
 import { ResourceWeekHorizontalDayHeader } from './resource-week-horizontal-day-header'
 import { ResourceWeekHorizontalTimeHeader } from './resource-week-horizontal-time-header'
+import { useResourceWeekHorizontalData } from './use-resource-week-horizontal-data'
 
 export const ResourceWeekHorizontal: React.FC = () => {
 	const { t } = useSmartCalendarContext()
-	const { isHourly, weekDays, weekHours } = useResourceWeekViewData()
+	const { isHourly, weekDays } = useResourceWeekViewData()
+	const { weekHours } = useResourceWeekHorizontalData()
 
 	return (
 		<ResourceEventGrid

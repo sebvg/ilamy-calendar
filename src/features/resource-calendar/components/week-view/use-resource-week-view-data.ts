@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { getViewHours } from '@/features/calendar/utils/view-hours'
 import { useSmartCalendarContext } from '@/hooks/use-smart-calendar-context'
 import { getWeekDays } from '@/lib/utils/date-utils'
 
@@ -31,27 +30,9 @@ export function useResourceWeekViewData() {
 	)
 
 	const resourceBusinessHours = useMemo(
-		() => resources.map((r) => r.businessHours).filter(Boolean),
+		() => resources.flatMap((r) => (r.businessHours ? [r.businessHours] : [])),
 		[resources]
 	)
-
-	const weekHours = useMemo(() => {
-		if (!isHourly) return []
-		return weekDays.map((day) =>
-			getViewHours({
-				referenceDate: day,
-				businessHours,
-				hideNonBusinessHours,
-				resourceBusinessHours,
-			})
-		)
-	}, [
-		isHourly,
-		weekDays,
-		businessHours,
-		hideNonBusinessHours,
-		resourceBusinessHours,
-	])
 
 	return {
 		isHourly,
@@ -62,6 +43,5 @@ export function useResourceWeekViewData() {
 		businessHours,
 		hideNonBusinessHours,
 		resourceBusinessHours,
-		weekHours,
 	}
 }

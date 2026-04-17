@@ -8,12 +8,12 @@ import type { Dayjs } from '@/lib/configs/dayjs-config'
 import { useResourceWeekViewData } from '../use-resource-week-view-data'
 import { ResourceWeekVerticalDayHeader } from './resource-week-vertical-day-header'
 import { ResourceWeekVerticalResourceHeader } from './resource-week-vertical-resource-header'
-import { useResourceWeekVerticalColumns } from './use-resource-week-vertical-columns'
+import { useResourceWeekVerticalData } from './use-resource-week-vertical-data'
 
 export const ResourceWeekVertical: React.FC = () => {
-	const { hours, columns } = useResourceWeekVerticalColumns()
 	const { isHourly, resources, weekDays, visibleDays } =
 		useResourceWeekViewData()
+	const { hours, columns } = useResourceWeekVerticalData()
 
 	const firstCol = useMemo(
 		() => ({

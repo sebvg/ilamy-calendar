@@ -3,7 +3,7 @@ import { getViewHours } from '@/features/calendar/utils/view-hours'
 import type { Dayjs } from '@/lib/configs/dayjs-config'
 import { useResourceWeekViewData } from '../use-resource-week-view-data'
 
-export function useResourceWeekVerticalColumns() {
+export function useResourceWeekVerticalData() {
 	const {
 		isHourly,
 		resources,
@@ -50,6 +50,7 @@ export function useResourceWeekVerticalColumns() {
 				id: `week-col-resource-${resource.id}`,
 				day: undefined,
 				resourceId: resource.id,
+				resource,
 				days: weekDays,
 				gridType: 'day' as const,
 			})),
