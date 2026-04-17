@@ -15,7 +15,6 @@ interface GridProps {
 	minute?: number // Optional minute for more granular time slots
 	dayMaxEvents?: number
 	className?: string // Optional className for custom styling
-	style?: React.CSSProperties // Optional inline styles
 	resourceId?: string | number // Optional resource ID for resource-specific day cells
 	gridType?: 'day' | 'hour' // Future use for different grid types
 	shouldRenderEvents?: boolean // Flag to determine if events should be rendered
@@ -31,7 +30,6 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 	hour,
 	minute,
 	className = '',
-	style,
 	resourceId,
 	gridType = 'day',
 	shouldRenderEvents = true,
@@ -144,8 +142,7 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 			<DroppableCell
 				allDay={allDay}
 				className={cn(
-					'cursor-pointer overflow-clip p-1 hover:bg-accent relative border-r last:border-r-0 only:border-r border-b',
-					style?.height ? '' : 'min-h-[60px]',
+					'cursor-pointer overflow-clip p-1 hover:bg-accent min-h-[60px] relative border-r last:border-r-0 only:border-r border-b',
 					className
 				)}
 				data-testid={dataTestId || testId}
@@ -155,7 +152,6 @@ const NoMemoGridCell: React.FC<GridProps> = ({
 				id={droppableId}
 				minute={minute}
 				resourceId={resourceId}
-				style={style}
 				type="day-cell"
 			>
 				<div

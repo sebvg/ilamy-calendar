@@ -104,59 +104,6 @@ describe('VerticalGridCol', () => {
 		).not.toBeInTheDocument()
 	})
 
-	describe('cellHeight prop', () => {
-		test('defaults to 60px cell height when using renderCell', () => {
-			renderVerticalGridCol({
-				id: 'time-col',
-				renderCell: (date: Dayjs) => <span>{date.format('HH:mm')}</span>,
-			})
-
-			const cellAt9 = screen.getByTestId('vertical-time-09')
-			expect(cellAt9.style.height).toBe('60px')
-		})
-
-		test('applies custom cellHeight of 72px (daily mode) when using renderCell', () => {
-			renderVerticalGridCol({
-				id: 'time-col',
-				cellHeight: 72,
-				renderCell: (date: Dayjs) => <span>{date.format('HH:mm')}</span>,
-			})
-
-			const cellAt9 = screen.getByTestId('vertical-time-09')
-			expect(cellAt9.style.height).toBe('72px')
-		})
-
-		test('applies cellHeight to all rendered cells when using renderCell', () => {
-			renderVerticalGridCol({
-				id: 'time-col',
-				cellHeight: 72,
-				renderCell: (date: Dayjs) => <span>{date.format('HH:mm')}</span>,
-			})
-
-			const cellAt9 = screen.getByTestId('vertical-time-09')
-			const cellAt10 = screen.getByTestId('vertical-time-10')
-
-			expect(cellAt9.style.height).toBe('72px')
-			expect(cellAt10.style.height).toBe('72px')
-		})
-
-		test('applies cellHeight via inline style to GridCell path cells', () => {
-			const dateStr = initialDate.format('YYYY-MM-DD')
-			renderVerticalGridCol({ cellHeight: 72 })
-
-			const cell = screen.getByTestId(`vertical-cell-${dateStr}-09-00`)
-			expect(cell.style.height).toBe('72px')
-		})
-
-		test('default cellHeight is 60px for GridCell path cells', () => {
-			const dateStr = initialDate.format('YYYY-MM-DD')
-			renderVerticalGridCol()
-
-			const cell = screen.getByTestId(`vertical-cell-${dateStr}-09-00`)
-			expect(cell.style.height).toBe('60px')
-		})
-	})
-
 	describe('gridType day mode', () => {
 		test('renders cells for day-level dates with correct test IDs', () => {
 			const dayDates = [
