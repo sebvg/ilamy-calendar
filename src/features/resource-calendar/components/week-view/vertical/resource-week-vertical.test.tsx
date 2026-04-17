@@ -348,6 +348,33 @@ describe('ResourceWeekVertical', () => {
 				const weekLabel = `Week ${weekNumber}`
 				expect(screen.getByText(weekLabel)).toBeInTheDocument()
 			})
+
+			test('firstCol (date-col) shows day name + date for each day of the week', () => {
+				renderResourceWeekVertical({ weekViewGranularity: 'daily' })
+
+				const dateCol = screen.getByTestId('vertical-col-date-col')
+
+				// initialDate is Wed Jan 1, 2025. Default firstDayOfWeek is Sunday,
+				// so the week is Sun Dec 29, 2024 → Sat Jan 4, 2025.
+				const expectedDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+				for (const day of expectedDays) {
+					expect(dateCol.textContent).toContain(day)
+				}
+			})
+
+			test('firstCol (date-col) does not render hour labels (regression: duplicate HourLabel bug)', () => {
+				// Regression test: before the fix, daily mode firstCol rendered
+				// <HourLabel date={date} /> in addition to the day name + date,
+				// producing "12 AM" after every day label. The fix removed the
+				// stray HourLabel; this test locks in that behavior.
+				renderResourceWeekVertical({ weekViewGranularity: 'daily' })
+
+				const dateCol = screen.getByTestId('vertical-col-date-col')
+
+				// HourLabel in 12-hour format (default) renders "12 AM", "1 AM", etc.
+				// If the bug returns, AM/PM text would appear in every cell.
+				expect(dateCol.textContent).not.toMatch(/AM|PM/)
+			})
 		})
 
 		describe('header structure differences', () => {

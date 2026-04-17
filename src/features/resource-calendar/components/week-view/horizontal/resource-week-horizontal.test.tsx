@@ -555,6 +555,24 @@ describe('ResourceWeekHorizontal', () => {
 				expect(screen.getByText('Resource 1')).toBeInTheDocument()
 				expect(screen.getByText('Resource 2')).toBeInTheDocument()
 			})
+
+			test('highlights today in the day header row in daily mode', () => {
+				// Verifies the extracted ResourceWeekHorizontalDayHeader applies
+				// the today-highlight className in daily mode, same as hourly.
+				const today = dayjs()
+				renderResourceWeekHorizontal({
+					initialDate: today,
+					weekViewGranularity: 'daily',
+				})
+
+				const dayHeaders = screen.getAllByTestId('resource-week-day-header')
+				const todayHeader = dayHeaders.find(
+					(header) =>
+						header.classList.contains('bg-blue-50') &&
+						header.classList.contains('text-blue-600')
+				)
+				expect(todayHeader).toBeDefined()
+			})
 		})
 
 		describe('header structure differences', () => {
