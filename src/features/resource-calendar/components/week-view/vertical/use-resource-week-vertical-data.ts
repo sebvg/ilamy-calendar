@@ -44,6 +44,9 @@ export function useResourceWeekVerticalData() {
 		[resources, visibleDays, getHours]
 	)
 
+	// Uses `weekDays` (all 7) intentionally, not `visibleDays`. Non-contiguous
+	// visible days would break multi-day event positioning, so `hiddenDays` is
+	// not supported in daily granularity.
 	const dailyColumns = useMemo(
 		() =>
 			resources.map((resource) => ({
