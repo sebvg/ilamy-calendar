@@ -1,4 +1,16 @@
-# CLAUDE.md — @ilamy/calendar
+# AGENTS.md — @ilamy/calendar
+
+This file is the canonical instructions for any AI coding assistant working on this repo. `CLAUDE.md` and `GEMINI.md` are symlinks to this file, as are `.claude/{commands,hooks,rules,settings.json}` → `.agents/…`.
+
+## Setup (Windows)
+
+Git on Windows defaults to writing symlinks as regular text files containing the target path, which breaks this repo's `.claude/*` and `CLAUDE.md`/`GEMINI.md` symlinks. Before cloning, run:
+
+```
+git config --global core.symlinks true
+```
+
+Alternatively, enable Windows Developer Mode (Windows 10+) which flips the default. macOS and Linux work out of the box.
 
 ## Hard Rules
 
