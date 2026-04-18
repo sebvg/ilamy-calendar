@@ -21,5 +21,28 @@
 		"deny": [],
 		"ask": ["Bash(git commit *)"],
 		"defaultMode": "acceptEdits"
+	},
+	"hooks": {
+		"Stop": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": ".claude/hooks/check-dev-log.sh"
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"matcher": "Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": ".claude/hooks/tdd-reminder.sh"
+					}
+				]
+			}
+		]
 	}
 }
